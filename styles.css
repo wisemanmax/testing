@@ -28,7 +28,8 @@ body {
     align-items: center;
     padding: 20px;
     position: relative;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 body::before {
@@ -49,7 +50,7 @@ body::before {
 }
 
 .app-container {
-    max-width: 430px;
+    max-width: min(100%, 520px);
     width: 100%;
     position: relative;
     z-index: 1;
@@ -373,6 +374,22 @@ input:focus {
     vertical-align: middle;
 }
 
+@media (max-width: 768px) {
+    body {
+        padding: 16px;
+    }
+
+    .screen {
+        padding: 36px 24px;
+        border-radius: 24px;
+    }
+
+    .logo {
+        width: 140px;
+        height: 140px;
+    }
+}
+
 @media (max-width: 480px) {
     .screen {
         padding: 32px 24px;
@@ -380,6 +397,38 @@ input:focus {
     
     h1 {
         font-size: 32px;
+    }
+}
+
+
+.form-group.is-focused,
+.input-wrapper.is-focused {
+    transform: scale(1.01);
+    transition: transform 0.2s ease;
+}
+
+@media (min-width: 900px) {
+    .app-container {
+        max-width: min(100%, 720px);
+    }
+
+    .screen {
+        padding: 56px 48px;
+    }
+
+    h1 {
+        font-size: 44px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
     }
 }
 
