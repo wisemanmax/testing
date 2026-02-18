@@ -170,6 +170,9 @@ input:focus {
 }
 
 .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     padding: 18px;
     border: none;
@@ -184,6 +187,10 @@ input:focus {
     position: relative;
     overflow: hidden;
     margin-bottom: 12px;
+}
+
+.btn-link {
+    text-decoration: none;
 }
 
 .btn::before {
