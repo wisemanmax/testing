@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World's End Sports Bar - Trade</title>
+    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@600;700&family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        .trade-header {
+            background: linear-gradient(135deg, var(--primary-red) 0%, var(--dark-red) 100%);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: -48px -32px 32px -32px;
+            border-radius: 32px 32px 0 0;
+            position: relative;
+        }
+
+        .back-button {
+            position: absolute;
+            left: 24px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .back-button:hover {
+            opacity: 0.8;
+            transform: translateX(-4px);
+        }
+
+        .trade-header h1 {
+            font-family: 'Teko', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin: 0;
+            background: none;
+            -webkit-text-fill-color: white;
+        }
+
+        .trade-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .trade-column {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 16px;
+        }
+
+        .column-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .player-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: var(--input-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .player-card:hover {
+            border-color: var(--primary-red);
+            background: rgba(185, 28, 28, 0.05);
+        }
+
+        .player-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--border-color);
+            flex-shrink: 0;
+        }
+
+        .player-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .player-card-name {
+            font-weight: 700;
+            font-size: 15px;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .player-card-meta {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .player-projection {
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        .projection-label {
+            font-size: 10px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .projection-value {
+            font-family: 'Teko', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--light-red);
+            line-height: 1;
+        }
+
+        .projection-time {
+            font-size: 10px;
+            color: var(--text-secondary);
+        }
+
+        .add-player-button {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .add-player-button:hover {
+            border-color: var(--primary-red);
+            color: var(--light-red);
+            background: rgba(185, 28, 28, 0.05);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            background: rgba(234, 179, 8, 0.2);
+            border: 1px solid #EAB308;
+            border-radius: 4px;
+            color: #FDE047;
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-left: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .trade-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="screen-wrapper active">
+            <div class="screen">
+                <div class="logo-container" style="margin-bottom: 24px;">
+                    <div class="logo" style="width: 80px; height: 80px;">
+                        <svg class="logo-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="100" cy="100" r="80" fill="#1A1A1A" stroke="#B91C1C" stroke-width="4"/>
+                            <ellipse cx="100" cy="100" rx="80" ry="40" fill="none" stroke="#B91C1C" stroke-width="2"/>
+                            <ellipse cx="100" cy="100" rx="40" ry="80" fill="none" stroke="#B91C1C" stroke-width="2"/>
+                            <line x1="20" y1="100" x2="180" y2="100" stroke="#B91C1C" stroke-width="2"/>
+                            <rect x="40" y="15" width="12" height="80" rx="6" fill="#8B4513" transform="rotate(-45 46 55)"/>
+                            <rect x="148" y="15" width="12" height="80" rx="6" fill="#8B4513" transform="rotate(45 154 55)"/>
+                            <circle cx="100" cy="100" r="15" fill="#FFFFFF"/>
+                            <path d="M 100 85 Q 90 95 100 105 Q 110 95 100 85" fill="#B91C1C"/>
+                            <path d="M 100 95 L 85 100 M 100 95 L 115 100" stroke="#B91C1C" stroke-width="2"/>
+                            <rect x="40" y="120" width="120" height="28" fill="#1A1A1A" stroke="#B91C1C" stroke-width="2"/>
+                            <text x="100" y="138" font-family="Teko, sans-serif" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">WORLD'S END</text>
+                            <text x="100" y="152" font-family="Teko, sans-serif" font-size="10" font-weight="600" fill="#DC2626" text-anchor="middle">SPORTS BAR</text>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="trade-header">
+                    <a href="dashboard.html" class="back-button">
+                        <span>←</span>
+                        <span>Back</span>
+                    </a>
+                    <h1>World's End Sports Bar</h1>
+                </div>
+
+                <div class="trade-grid">
+                    <!-- My Team -->
+                    <div class="trade-column">
+                        <div class="column-title">My Team</div>
+                        
+                        <div class="player-card">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Crect fill='%23003594' width='48' height='48' rx='24'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='16' font-weight='bold' fill='white'%3ESD%3C/text%3E%3C/svg%3E" class="player-avatar">
+                            <div class="player-details">
+                                <div class="player-card-name">Stefon Diggs</div>
+                                <div class="player-card-meta">WR • Bills</div>
+                            </div>
+                            <div class="player-projection">
+                                <div class="projection-label">14<sup>WR</sup></div>
+                                <div class="projection-value">16.3</div>
+                                <div class="projection-time">Tue 8 PM</div>
+                            </div>
+                        </div>
+
+                        <div class="player-card">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Crect fill='%23003594' width='48' height='48' rx='24'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='16' font-weight='bold' fill='white'%3EPN%3C/text%3E%3C/svg%3E" class="player-avatar">
+                            <div class="player-details">
+                                <div class="player-card-name">Puka Nacua</div>
+                                <div class="player-card-meta">WR • Rams</div>
+                            </div>
+                            <div class="player-projection">
+                                <div class="projection-label">17<sup>WR</sup></div>
+                                <div class="projection-value">13.6</div>
+                                <div class="projection-time">Tue 8 PM</div>
+                            </div>
+                        </div>
+
+                        <div class="player-card">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Crect fill='%23AA0000' width='48' height='48' rx='24'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='16' font-weight='bold' fill='white'%3EJC%3C/text%3E%3C/svg%3E" class="player-avatar">
+                            <div class="player-details">
+                                <div class="player-card-name">James Conner</div>
+                                <div class="player-card-meta">RB • Cardinals</div>
+                            </div>
+                            <div class="player-projection">
+                                <div class="projection-label">6<sup>RB</sup></div>
+                                <div class="projection-value">13.9</div>
+                                <div class="projection-time">Tue 8 PM</div>
+                            </div>
+                        </div>
+
+                        <button class="add-player-button">+ Add Player</button>
+                    </div>
+
+                    <!-- Opponent -->
+                    <div class="trade-column">
+                        <div class="column-title">Opponent</div>
+                        
+                        <div class="player-card">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Crect fill='%23041E42' width='48' height='48' rx='24'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='16' font-weight='bold' fill='white'%3ETP%3C/text%3E%3C/svg%3E" class="player-avatar">
+                            <div class="player-details">
+                                <div class="player-card-name">Tony Pollard</div>
+                                <div class="player-card-meta">RB • Cobs</div>
+                            </div>
+                            <div class="player-projection">
+                                <div class="projection-label">15<sup>RB</sup></div>
+                                <div class="projection-value">15.6</div>
+                                <div class="projection-time">Mon at 8 PM</div>
+                            </div>
+                        </div>
+
+                        <div class="player-card">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Crect fill='%23008E97' width='48' height='48' rx='24'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='16' font-weight='bold' fill='white'%3EJW%3C/text%3E%3C/svg%3E" class="player-avatar">
+                            <div class="player-details">
+                                <div class="player-card-name">Jaylen Waddle</div>
+                                <div class="player-card-meta">WR • Dolphins</div>
+                            </div>
+                            <div class="player-projection">
+                                <div class="projection-label">14<sup>WR</sup></div>
+                                <div class="projection-value">14.8</div>
+                                <div class="projection-time">Tue at 8 PM</div>
+                            </div>
+                        </div>
+
+                        <div class="player-card">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Crect fill='%23C60C30' width='48' height='48' rx='24'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='16' font-weight='bold' fill='white'%3EDP%3C/text%3E%3C/svg%3E" class="player-avatar">
+                            <div class="player-details">
+                                <div class="player-card-name">Dameon Pierce</div>
+                                <div class="player-card-meta">RB • Texans <span class="status-badge">Questionable</span></div>
+                            </div>
+                            <div class="player-projection">
+                                <div class="projection-label">31<sup>RB</sup></div>
+                                <div class="projection-value">-</div>
+                                <div class="projection-time">Tue at 8 PM</div>
+                            </div>
+                        </div>
+
+                        <button class="add-player-button">+ Add Player</button>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="proposeTrade()">
+                    <span>Propose Trade</span>
+                </button>
+
+                <div class="link-text" style="margin-top: 24px;">
+                    <a href="dashboard.html">← Cancel trade</a>
+                </div>
+
+                <div class="powered-by">
+                    <div class="powered-by-text">Powered by</div>
+                    <div class="powered-logo">
+                        <div class="powered-icon">🏆</div>
+                        <span>The Season Never Ends</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script>
+        function proposeTrade() {
+            alert('Trade proposal sent! Your opponent will be notified.');
+            window.location.href = 'dashboard.html';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World's End Sports Bar - Standings</title>
+    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@600;700&family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        .standings-header {
+            background: linear-gradient(135deg, var(--primary-red) 0%, var(--dark-red) 100%);
+            padding: 16px 24px;
+            text-align: center;
+            margin: -48px -32px 0 -32px;
+            border-radius: 32px 32px 0 0;
+        }
+
+        .standings-title {
+            font-family: 'Teko', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin: 0;
+        }
+
+        .standings-container {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 24px 0;
+        }
+
+        .standings-table-wrapper {
+            overflow-x: auto;
+            margin: 0 -20px;
+            padding: 0 20px;
+        }
+
+        .standings-table-wrapper::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .standings-table-wrapper::-webkit-scrollbar-track {
+            background: var(--input-bg);
+            border-radius: 3px;
+        }
+
+        .standings-table-wrapper::-webkit-scrollbar-thumb {
+            background: var(--primary-red);
+            border-radius: 3px;
+        }
+
+        .standings-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            min-width: 600px;
+        }
+
+        .standings-table thead th {
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.02);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .standings-table thead th:first-child {
+            border-radius: 8px 0 0 0;
+        }
+
+        .standings-table thead th:last-child {
+            border-radius: 0 8px 0 0;
+        }
+
+        .standings-table tbody tr {
+            transition: all 0.2s;
+        }
+
+        .standings-table tbody tr:hover {
+            background: rgba(185, 28, 28, 0.05);
+        }
+
+        .standings-table tbody td {
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .standings-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .rank-cell {
+            font-family: 'Teko', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--light-red);
+            width: 60px;
+        }
+
+        .rank-cell.top-rank {
+            color: #FFD700;
+        }
+
+        .team-cell {
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .record-cell {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .points-cell {
+            font-family: 'Teko', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-align: right;
+        }
+
+        .table-legend {
+            display: flex;
+            gap: 24px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .legend-label {
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-banner {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .info-icon {
+            width: 24px;
+            height: 24px;
+            background: rgba(59, 130, 246, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .info-text {
+            font-size: 13px;
+            color: #93C5FD;
+        }
+
+        .playoff-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #10B981;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .elimination-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #EF4444;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="screen-wrapper active">
+            <div class="screen">
+                <div class="logo-container" style="margin-bottom: 24px;">
+                    <div class="logo" style="width: 100px; height: 100px;">
+                        <svg class="logo-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="100" cy="100" r="80" fill="#1A1A1A" stroke="#B91C1C" stroke-width="4"/>
+                            <ellipse cx="100" cy="100" rx="80" ry="40" fill="none" stroke="#B91C1C" stroke-width="2"/>
+                            <ellipse cx="100" cy="100" rx="40" ry="80" fill="none" stroke="#B91C1C" stroke-width="2"/>
+                            <line x1="20" y1="100" x2="180" y2="100" stroke="#B91C1C" stroke-width="2"/>
+                            <rect x="40" y="15" width="12" height="80" rx="6" fill="#8B4513" transform="rotate(-45 46 55)"/>
+                            <rect x="148" y="15" width="12" height="80" rx="6" fill="#8B4513" transform="rotate(45 154 55)"/>
+                            <circle cx="100" cy="100" r="15" fill="#FFFFFF"/>
+                            <path d="M 100 85 Q 90 95 100 105 Q 110 95 100 85" fill="#B91C1C"/>
+                            <path d="M 100 95 L 85 100 M 100 95 L 115 100" stroke="#B91C1C" stroke-width="2"/>
+                            <rect x="40" y="120" width="120" height="28" fill="#1A1A1A" stroke="#B91C1C" stroke-width="2"/>
+                            <text x="100" y="138" font-family="Teko, sans-serif" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">WORLD'S END</text>
+                            <text x="100" y="152" font-family="Teko, sans-serif" font-size="10" font-weight="600" fill="#DC2626" text-anchor="middle">SPORTS BAR</text>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="standings-header">
+                    <div class="standings-title">Standings</div>
+                </div>
+
+                <div class="info-banner">
+                    <div class="info-icon">ℹ️</div>
+                    <div class="info-text">
+                        Top 6 teams advance to playoffs. Scroll right to see additional stats.
+                    </div>
+                </div>
+
+                <div class="standings-container">
+                    <div class="standings-table-wrapper">
+                        <table class="standings-table">
+                            <thead>
+                                <tr>
+                                    <th>RANK</th>
+                                    <th>TEAM</th>
+                                    <th>REC</th>
+                                    <th>PTS</th>
+                                    <th>PF</th>
+                                    <th>PA</th>
+                                    <th>DIFF</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="rank-cell top-rank">1</td>
+                                    <td class="team-cell">
+                                        <span class="playoff-indicator"></span>
+                                        Team Smith
+                                    </td>
+                                    <td class="record-cell">6-2</td>
+                                    <td class="points-cell">1,038</td>
+                                    <td class="record-cell">892</td>
+                                    <td class="record-cell">745</td>
+                                    <td class="record-cell">+147</td>
+                                </tr>
+                                <tr>
+                                    <td class="rank-cell top-rank">2</td>
+                                    <td class="team-cell">
+                                        <span class="playoff-indicator"></span>
+                                        The Monsters
+                                    </td>
+                                    <td class="record-cell">6-2</td>
+                                    <td class="points-cell">1,006</td>
+                                    <td class="record-cell">856</td>
+                                    <td class="record-cell">798</td>
+                                    <td class="record-cell">+58</td>
+                                </tr>
+                                <tr>
+                                    <td class="rank-cell top-rank">3</td>
+                                    <td class="team-cell">
+                                        <span class="playoff-indicator"></span>
+                                        Bob Loblaw
+                                    </td>
+                                    <td class="record-cell">5-3</td>
+                                    <td class="points-cell">975</td>
+                                    <td class="record-cell">823</td>
+                                    <td class="record-cell">801</td>
+                                    <td class="record-cell">+22</td>
+                                </tr>
+                                <tr>
+                                    <td class="rank-cell">4</td>
+                                    <td class="team-cell">
+                                        <span class="playoff-indicator"></span>
+                                        Mean Machine
+                                    </td>
+                                    <td class="record-cell">4-4</td>
+                                    <td class="points-cell">928</td>
+                                    <td class="record-cell">789</td>
+                                    <td class="record-cell">812</td>
+                                    <td class="record-cell">-23</td>
+                                </tr>
+                                <tr>
+                                    <td class="rank-cell">5</td>
+                                    <td class="team-cell">
+                                        <span class="playoff-indicator"></span>
+                                        Maulers
+                                    </td>
+                                    <td class="record-cell">4-4</td>
+                                    <td class="points-cell">901</td>
+                                    <td class="record-cell">765</td>
+                                    <td class="record-cell">756</td>
+                                    <td class="record-cell">+9</td>
+                                </tr>
+                                <tr>
+                                    <td class="rank-cell">6</td>
+                                    <td class="team-cell">
+                                        <span class="playoff-indicator"></span>
+                                        Game of Jones
+                                    </td>
+                                    <td class="record-cell">4-4</td>
+                                    <td class="points-cell">880</td>
+                                    <td class="record-cell">745</td>
+                                    <td class="record-cell">778</td>
+                                    <td class="record-cell">-33</td>
+                                </tr>
+                                <tr>
+                                    <td class="rank-cell">7</td>
+                                    <td class="team-cell">
+                                        <span class="elimination-indicator"></span>
+                                        Fightin' Quakers
+                                    </td>
+                                    <td class="record-cell">3-5</td>
+                                    <td class="points-cell">860</td>
+                                    <td class="record-cell">723</td>
+                                    <td class="record-cell">798</td>
+                                    <td class="record-cell">-75</td>
+                                </tr>
+                                <tr>
+                                    <td class="rank-cell">8</td>
+                                    <td class="team-cell">
+                                        <span class="elimination-indicator"></span>
+                                        Monstars
+                                    </td>
+                                    <td class="record-cell">2-6</td>
+                                    <td class="points-cell">813</td>
+                                    <td class="record-cell">689</td>
+                                    <td class="record-cell">845</td>
+                                    <td class="record-cell">-156</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="table-legend">
+                        <div class="legend-item">
+                            <span class="legend-label">REC:</span>
+                            <span>Record</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-label">PTS:</span>
+                            <span>Total Points</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-label">PF:</span>
+                            <span>Points For</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-label">PA:</span>
+                            <span>Points Against</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-label">DIFF:</span>
+                            <span>Point Differential</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="link-text">
+                    <a href="dashboard.html">← Back to dashboard</a>
+                </div>
+
+                <div class="powered-by">
+                    <div class="powered-by-text">Powered by</div>
+                    <div class="powered-logo">
+                        <div class="powered-icon">🏆</div>
+                        <span>The Season Never Ends</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/app.js"></script>
+</body>
+</html>
