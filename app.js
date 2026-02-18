@@ -1,141 +1,171 @@
-// Navigation functions
+const APP_ROUTES = Object.freeze({
+    login: 'index.html',
+    register: 'register.html',
+    joinLeague: 'join-league.html',
+    leagueCode: 'league-code.html',
+    dashboard: 'dashboard.html'
+});
+
+function sanitizeInput(value) {
+    return String(value ?? '').trim();
+}
+
 function showScreen(screenNumber) {
-    // Hide all screens
-    document.querySelectorAll('.screen-wrapper').forEach(screen => {
+    const screens = document.querySelectorAll('.screen-wrapper');
+    if (!screens.length) {
+        return;
+    }
+
+    const targetScreen = document.getElementById(`screen${screenNumber}`);
+    if (!targetScreen) {
+        return;
+    }
+
+    screens.forEach((screen) => {
         screen.classList.remove('active');
     });
-    
-    // Show selected screen
-    const targetScreen = document.getElementById(`screen${screenNumber}`);
-    if (targetScreen) {
-        targetScreen.classList.add('active');
-    }
-    
-    // Update navigation dots
+
+    targetScreen.classList.add('active');
     updateNavDots(screenNumber);
 }
 
 function updateNavDots(activeScreen) {
-    document.querySelectorAll('.nav-dot').forEach((dot, index) => {
-        if (index === activeScreen - 1) {
-            dot.classList.add('active');
-        } else {
-            dot.classList.remove('active');
-        }
+    const navDots = document.querySelectorAll('.nav-dot');
+    if (!navDots.length) {
+        return;
+    }
+
+    navDots.forEach((dot, index) => {
+        const isActive = index === activeScreen - 1;
+        dot.classList.toggle('active', isActive);
+        dot.setAttribute('aria-current', isActive ? 'true' : 'false');
     });
 }
 
-// Initialize app
-function initApp() {
-    // Show first screen by default
-    showScreen(1);
-    
-    // Add keyboard navigation
-    document.addEventListener('keydown', handleKeyNavigation);
-    
-    // Add input focus animations
-    addInputAnimations();
-    
-    // Create floating particles
-    createParticles();
-}
+function handleKeyNavigation(event) {
+    const currentScreen = document.querySelector('.screen-wrapper.active[id^="screen"]');
+    if (!currentScreen) {
+        return;
+    }
 
-// Keyboard navigation handler
-function handleKeyNavigation(e) {
-    const currentScreen = document.querySelector('.screen-wrapper.active');
-    if (!currentScreen) return;
-    
-    const screenNumber = parseInt(currentScreen.id.replace('screen', ''));
-    
-    if (e.key === 'ArrowRight' && screenNumber < 4) {
+    const screenNumber = Number.parseInt(currentScreen.id.replace('screen', ''), 10);
+    if (Number.isNaN(screenNumber)) {
+        return;
+    }
+
+    const maxScreens = document.querySelectorAll('.screen-wrapper[id^="screen"]').length;
+
+    if (event.key === 'ArrowRight' && screenNumber < maxScreens) {
         showScreen(screenNumber + 1);
-    } else if (e.key === 'ArrowLeft' && screenNumber > 1) {
+    }
+
+    if (event.key === 'ArrowLeft' && screenNumber > 1) {
         showScreen(screenNumber - 1);
     }
 }
 
-// Add input focus animations
 function addInputAnimations() {
-    document.querySelectorAll('input').forEach(input => {
-        input.addEventListener('focus', function() {
-            this.parentElement.style.transform = 'scale(1.02)';
-            this.parentElement.style.transition = 'transform 0.2s';
+    document.querySelectorAll('.form-group input, .input-wrapper input').forEach((input) => {
+        const wrapper = input.closest('.form-group, .input-wrapper');
+        if (!wrapper) {
+            return;
+        }
+
+        input.addEventListener('focus', () => {
+            wrapper.classList.add('is-focused');
         });
-        
-        input.addEventListener('blur', function() {
-            this.parentElement.style.transform = 'scale(1)';
+
+        input.addEventListener('blur', () => {
+            wrapper.classList.remove('is-focused');
         });
     });
 }
 
-// Create floating particles
 function createParticles() {
-    const particleContainer = document.body;
-    const particleCount = 5;
-    
-    for (let i = 0; i < particleCount; i++) {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        return;
+    }
+
+    if (document.querySelectorAll('.particle').length || document.querySelector('.screen[data-disable-particles="true"]')) {
+        return;
+    }
+
+    const particleCount = window.innerWidth < 600 ? 3 : 5;
+    for (let i = 0; i < particleCount; i += 1) {
         const particle = document.createElement('div');
         particle.className = 'particle';
-        particle.style.left = `${(i * 20) + 10}%`;
+        particle.style.left = `${(i * (100 / particleCount)) + 10}%`;
         particle.style.animationDelay = `${i * 3}s`;
-        particleContainer.appendChild(particle);
+        document.body.appendChild(particle);
     }
 }
 
-// Form validation functions
+function navigateTo(route) {
+    const targetRoute = APP_ROUTES[route];
+    if (targetRoute) {
+        window.location.assign(targetRoute);
+    }
+}
+
 function validateLogin() {
-    const username = document.getElementById('username')?.value;
-    const password = document.getElementById('password')?.value;
-    
+    const username = sanitizeInput(document.getElementById('username')?.value);
+    const password = sanitizeInput(document.getElementById('password')?.value);
+
     if (!username || !password) {
-        alert('Please enter both username and password');
+        window.alert('Please enter both username and password.');
         return false;
     }
-    
-    // In a real app, this would make an API call
-    console.log('Login attempt:', { username, password: '***' });
-    showScreen(2);
+
+    navigateTo('dashboard');
     return false;
 }
 
 function validateRegistration() {
-    const firstName = document.getElementById('firstName')?.value;
-    const lastName = document.getElementById('lastName')?.value;
-    const email = document.getElementById('email')?.value;
-    const phone = document.getElementById('phone')?.value;
-    
+    const firstName = sanitizeInput(document.getElementById('firstName')?.value);
+    const lastName = sanitizeInput(document.getElementById('lastName')?.value);
+    const email = sanitizeInput(document.getElementById('email')?.value);
+    const phone = sanitizeInput(document.getElementById('phone')?.value);
+
     if (!firstName || !lastName || !email || !phone) {
-        alert('Please fill in all fields');
+        window.alert('Please fill in all fields.');
         return false;
     }
-    
-    // Email validation
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-        alert('Please enter a valid email address');
+        window.alert('Please enter a valid email address.');
         return false;
     }
-    
-    // In a real app, this would make an API call
-    console.log('Registration:', { firstName, lastName, email, phone });
-    showScreen(3);
+
+    navigateTo('joinLeague');
     return false;
 }
 
 function joinLeague() {
-    const teamName = document.getElementById('teamname')?.value;
-    const leagueCode = document.getElementById('leaguecode')?.value;
-    
+    const teamName = sanitizeInput(document.getElementById('teamname')?.value);
+    const leagueCode = sanitizeInput(document.getElementById('leaguecode')?.value);
+
     if (!teamName || !leagueCode) {
-        alert('Please enter both team name and league code');
+        window.alert('Please enter both team name and league code.');
         return false;
     }
-    
-    // In a real app, this would make an API call
-    console.log('Joining league:', { teamName, leagueCode });
-    alert('Successfully joined league!');
+
+    navigateTo('dashboard');
     return false;
 }
 
-// Initialize when DOM is loaded
+function initApp() {
+    const firstScreen = document.querySelector('.screen-wrapper[id^="screen"]');
+    if (firstScreen) {
+        const firstScreenNumber = Number.parseInt(firstScreen.id.replace('screen', ''), 10);
+        if (!Number.isNaN(firstScreenNumber)) {
+            showScreen(firstScreenNumber);
+        }
+        document.addEventListener('keydown', handleKeyNavigation);
+    }
+
+    addInputAnimations();
+    createParticles();
+}
+
 document.addEventListener('DOMContentLoaded', initApp);
