@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World's End Sports Bar - News</title>
+    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@600;700&family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        .page-header {
+            background: linear-gradient(135deg, #1A1A1A 0%, #0A0A0A 100%);
+            padding: 32px 24px;
+            text-align: center;
+            margin: -48px -32px 32px -32px;
+            border-radius: 32px 32px 0 0;
+            border-bottom: 3px solid var(--primary-red);
+        }
+
+        .page-header h1 {
+            font-family: 'Teko', sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin: 0;
+            background: none;
+            -webkit-text-fill-color: white;
+        }
+
+        .news-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .news-card {
+            display: flex;
+            gap: 16px;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            overflow: hidden;
+        }
+
+        .news-card:hover {
+            border-color: var(--primary-red);
+            background: rgba(185, 28, 28, 0.05);
+            transform: translateX(4px);
+            box-shadow: 0 8px 24px rgba(185, 28, 28, 0.2);
+        }
+
+        .news-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            object-fit: cover;
+            flex-shrink: 0;
+            border: 2px solid var(--border-color);
+        }
+
+        .news-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .news-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            line-height: 1.3;
+            color: var(--text-primary);
+        }
+
+        .news-excerpt {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+            margin-bottom: 8px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .news-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .news-time {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .news-time::before {
+            content: '🕐';
+            font-size: 12px;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+        }
+
+        .filter-tab {
+            padding: 10px 20px;
+            background: var(--input-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .filter-tab:hover {
+            border-color: var(--primary-red);
+            background: rgba(185, 28, 28, 0.1);
+        }
+
+        .filter-tab.active {
+            background: linear-gradient(135deg, var(--primary-red) 0%, var(--dark-red) 100%);
+            border-color: var(--primary-red);
+            color: white;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            color: var(--text-secondary);
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="screen-wrapper active">
+            <div class="screen">
+                <div class="logo-container" style="margin-bottom: 24px;">
+                    <div class="logo" style="width: 100px; height: 100px;">
+                        <svg class="logo-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="100" cy="100" r="80" fill="#1A1A1A" stroke="#B91C1C" stroke-width="4"/>
+                            <ellipse cx="100" cy="100" rx="80" ry="40" fill="none" stroke="#B91C1C" stroke-width="2"/>
+                            <ellipse cx="100" cy="100" rx="40" ry="80" fill="none" stroke="#B91C1C" stroke-width="2"/>
+                            <line x1="20" y1="100" x2="180" y2="100" stroke="#B91C1C" stroke-width="2"/>
+                            <rect x="40" y="15" width="12" height="80" rx="6" fill="#8B4513" transform="rotate(-45 46 55)"/>
+                            <rect x="148" y="15" width="12" height="80" rx="6" fill="#8B4513" transform="rotate(45 154 55)"/>
+                            <circle cx="100" cy="100" r="15" fill="#FFFFFF"/>
+                            <path d="M 100 85 Q 90 95 100 105 Q 110 95 100 85" fill="#B91C1C"/>
+                            <path d="M 100 95 L 85 100 M 100 95 L 115 100" stroke="#B91C1C" stroke-width="2"/>
+                            <rect x="40" y="120" width="120" height="28" fill="#1A1A1A" stroke="#B91C1C" stroke-width="2"/>
+                            <text x="100" y="138" font-family="Teko, sans-serif" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">WORLD'S END</text>
+                            <text x="100" y="152" font-family="Teko, sans-serif" font-size="10" font-weight="600" fill="#DC2626" text-anchor="middle">SPORTS BAR</text>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="page-header">
+                    <h1>NEWS</h1>
+                </div>
+
+                <div class="filter-tabs">
+                    <div class="filter-tab active" onclick="filterNews('all')">All</div>
+                    <div class="filter-tab" onclick="filterNews('injuries')">Injuries</div>
+                    <div class="filter-tab" onclick="filterNews('trades')">Trades</div>
+                    <div class="filter-tab" onclick="filterNews('sleepers')">Sleepers</div>
+                    <div class="filter-tab" onclick="filterNews('waiver')">Waiver Wire</div>
+                </div>
+
+                <div class="news-list">
+                    <!-- News Item 1 -->
+                    <div class="news-card" onclick="openNews(1)">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect fill='%23B91C1C' width='80' height='80'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='24' fill='white'%3E15%3C/text%3E%3C/svg%3E" alt="Patrick Mahomes" class="news-image">
+                        <div class="news-content">
+                            <div class="news-title">Patrick Mahomes Expected To Start Week 1</div>
+                            <div class="news-excerpt">Mahomes (ankle) is projected to be available for the regular season opener against the Lions.</div>
+                            <div class="news-meta">
+                                <span class="news-time">4h ago</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- News Item 2 -->
+                    <div class="news-card" onclick="openNews(2)">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect fill='%23203731' width='80' height='80'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='24' fill='%23FFB612'%3E10%3C/text%3E%3C/svg%3E" alt="Jordan Love" class="news-image">
+                        <div class="news-content">
+                            <div class="news-title">Jordan Love Shining In Latest Practices</div>
+                            <div class="news-excerpt">Love has performed very well over the past week, according to multiple sources in Green Bay.</div>
+                            <div class="news-meta">
+                                <span class="news-time">6h ago</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- News Item 3 -->
+                    <div class="news-card" onclick="openNews(3)">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect fill='%23FFB612' width='80' height='80'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='24' fill='black'%3E22%3C/text%3E%3C/svg%3E" alt="Najee Harris" class="news-image">
+                        <div class="news-content">
+                            <div class="news-title">Najee Harris Dealing With Minor Injury</div>
+                            <div class="news-excerpt">Harris missed practice Thursday due to a soft tissue injury, though he is not expected to miss extended time.</div>
+                            <div class="news-meta">
+                                <span class="news-time">8h ago</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- News Item 4 -->
+                    <div class="news-card" onclick="openNews(4)">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect fill='%23003594' width='80' height='80'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='24' fill='%23FF3C00'%3E10%3C/text%3E%3C/svg%3E" alt="Cooper Kupp" class="news-image">
+                        <div class="news-content">
+                            <div class="news-title">Cooper Kupp Returns to Full Practice</div>
+                            <div class="news-excerpt">The star receiver participated in full team drills today for the first time since Week 12.</div>
+                            <div class="news-meta">
+                                <span class="news-time">10h ago</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- News Item 5 -->
+                    <div class="news-card" onclick="openNews(5)">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect fill='%23000000' width='80' height='80'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='24' fill='white'%3E8%3C/text%3E%3C/svg%3E" alt="Josh Jacobs" class="news-image">
+                        <div class="news-content">
+                            <div class="news-title">Josh Jacobs Named Starting RB for Week 1</div>
+                            <div class="news-excerpt">Jacobs will get the first crack at the starting running back role in Las Vegas's season opener.</div>
+                            <div class="news-meta">
+                                <span class="news-time">12h ago</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- News Item 6 -->
+                    <div class="news-card" onclick="openNews(6)">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect fill='%23D50A0A' width='80' height='80'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='24' fill='white'%3E13%3C/text%3E%3C/svg%3E" alt="Mike Evans" class="news-image">
+                        <div class="news-content">
+                            <div class="news-title">Mike Evans Signs Contract Extension</div>
+                            <div class="news-excerpt">The veteran WR inks a new two-year deal to stay in Tampa Bay through 2026 season.</div>
+                            <div class="news-meta">
+                                <span class="news-time">14h ago</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- News Item 7 -->
+                    <div class="news-card" onclick="openNews(7)">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect fill='%23A5ACAF' width='80' height='80'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='24' fill='black'%3E28%3C/text%3E%3C/svg%3E" alt="Josh Jacobs" class="news-image">
+                        <div class="news-content">
+                            <div class="news-title">Top 10 Waiver Wire Pickups for Week 1</div>
+                            <div class="news-excerpt">Don't miss these potential league winners sitting on your waiver wire right now.</div>
+                            <div class="news-meta">
+                                <span class="news-time">16h ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="link-text" style="margin-top: 32px;">
+                    <a href="dashboard.html">← Back to dashboard</a>
+                </div>
+
+                <div class="powered-by">
+                    <div class="powered-by-text">Powered by</div>
+                    <div class="powered-logo">
+                        <div class="powered-icon">🏆</div>
+                        <span>The Season Never Ends</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script>
+        function filterNews(category) {
+            // Remove active class from all tabs
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+            
+            // In a real app, this would filter the news items
+            console.log('Filtering news by:', category);
+        }
+
+        function openNews(newsId) {
+            // In a real app, this would open the full news article
+            console.log('Opening news article:', newsId);
+            alert('Full article view coming soon!');
+        }
+    </script>
+</body>
+</html>
