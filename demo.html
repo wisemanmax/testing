@@ -3,251 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>World's End Sports Bar - Full Demo</title>
+    <title>World's End Sports Bar - Desktop Demo</title>
     <link href="https://fonts.googleapis.com/css2?family=Teko:wght@600;700&family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-    <!-- Floating particles -->
-    <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
-    <div class="particle" style="left: 30%; animation-delay: 3s;"></div>
-    <div class="particle" style="left: 50%; animation-delay: 6s;"></div>
-    <div class="particle" style="left: 70%; animation-delay: 9s;"></div>
-    <div class="particle" style="left: 90%; animation-delay: 12s;"></div>
-
-    <div class="app-container">
-        <!-- Screen 1: Home / Login -->
-        <div class="screen-wrapper active" id="screen1">
-            <div class="screen">
-                <div class="logo-container">
-                    <div class="logo">
-                        <object type="image/svg+xml" data="images/logo.svg" class="logo-svg">
-                            <!-- Fallback inline SVG -->
-                            <svg class="logo-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="100" cy="100" r="80" fill="#1A1A1A" stroke="#B91C1C" stroke-width="4"/>
-                                <ellipse cx="100" cy="100" rx="80" ry="40" fill="none" stroke="#B91C1C" stroke-width="2"/>
-                                <ellipse cx="100" cy="100" rx="40" ry="80" fill="none" stroke="#B91C1C" stroke-width="2"/>
-                                <line x1="20" y1="100" x2="180" y2="100" stroke="#B91C1C" stroke-width="2"/>
-                                <rect x="40" y="15" width="12" height="80" rx="6" fill="#8B4513" transform="rotate(-45 46 55)"/>
-                                <rect x="148" y="15" width="12" height="80" rx="6" fill="#8B4513" transform="rotate(45 154 55)"/>
-                                <circle cx="100" cy="100" r="15" fill="#FFFFFF"/>
-                                <path d="M 100 85 Q 90 95 100 105 Q 110 95 100 85" fill="#B91C1C"/>
-                                <path d="M 100 95 L 85 100 M 100 95 L 115 100" stroke="#B91C1C" stroke-width="2"/>
-                                <rect x="40" y="120" width="120" height="28" fill="#1A1A1A" stroke="#B91C1C" stroke-width="2"/>
-                                <text x="100" y="138" font-family="Teko, sans-serif" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">WORLD'S END</text>
-                                <text x="100" y="152" font-family="Teko, sans-serif" font-size="10" font-weight="600" fill="#DC2626" text-anchor="middle">SPORTS BAR</text>
-                            </svg>
-                        </object>
-                    </div>
-                </div>
-
-                <h1>Already a User?</h1>
-                
-                <div class="form-group">
-                    <input type="text" placeholder="Username" id="username">
-                </div>
-
-                <div class="form-group">
-                    <input type="password" placeholder="Password" id="password">
-                </div>
-
-                <button class="btn btn-primary" onclick="showScreen(2)">
-                    <span>Login</span>
-                </button>
-
-                <div class="divider">
-                    <span>or</span>
-                </div>
-
-                <button class="btn btn-secondary" onclick="showScreen(2)">
-                    <span>Create Account</span>
-                </button>
-
-                <div class="link-text">
-                    New to leagues? <a href="#" onclick="showScreen(2); return false;">Get Started</a>
-                </div>
-
-                <div class="powered-by">
-                    <div class="powered-by-text">Powered by</div>
-                    <div class="powered-logo">
-                        <div class="powered-icon">🏆</div>
-                        <span>The Season Never Ends</span>
-                    </div>
+<body class="desktop-demo-body" data-page="desktop-demo">
+    <div class="desktop-demo-shell">
+        <aside class="desktop-sidebar">
+            <div class="desktop-branding">
+                <div class="desktop-branding-icon">🏈</div>
+                <div>
+                    <p class="desktop-branding-kicker">World's End</p>
+                    <h1>League Hub</h1>
                 </div>
             </div>
-        </div>
 
-        <!-- Screen 2: Create Account -->
-        <div class="screen-wrapper" id="screen2">
-            <div class="screen">
-                <div class="logo-container">
-                    <div class="logo">
-                        <object type="image/svg+xml" data="images/logo.svg" class="logo-svg">
-                            <svg class="logo-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="100" cy="100" r="80" fill="#1A1A1A" stroke="#B91C1C" stroke-width="4"/>
-                                <ellipse cx="100" cy="100" rx="80" ry="40" fill="none" stroke="#B91C1C" stroke-width="2"/>
-                                <ellipse cx="100" cy="100" rx="40" ry="80" fill="none" stroke="#B91C1C" stroke-width="2"/>
-                                <line x1="20" y1="100" x2="180" y2="100" stroke="#B91C1C" stroke-width="2"/>
-                                <rect x="40" y="15" width="12" height="80" rx="6" fill="#8B4513" transform="rotate(-45 46 55)"/>
-                                <rect x="148" y="15" width="12" height="80" rx="6" fill="#8B4513" transform="rotate(45 154 55)"/>
-                                <circle cx="100" cy="100" r="15" fill="#FFFFFF"/>
-                                <path d="M 100 85 Q 90 95 100 105 Q 110 95 100 85" fill="#B91C1C"/>
-                                <path d="M 100 95 L 85 100 M 100 95 L 115 100" stroke="#B91C1C" stroke-width="2"/>
-                                <rect x="40" y="120" width="120" height="28" fill="#1A1A1A" stroke="#B91C1C" stroke-width="2"/>
-                                <text x="100" y="138" font-family="Teko, sans-serif" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">WORLD'S END</text>
-                                <text x="100" y="152" font-family="Teko, sans-serif" font-size="10" font-weight="600" fill="#DC2626" text-anchor="middle">SPORTS BAR</text>
-                            </svg>
-                        </object>
+            <nav class="desktop-nav" aria-label="Primary navigation">
+                <button class="desktop-nav-item is-active" data-view="overview">Overview</button>
+                <button class="desktop-nav-item" data-view="match-center">Match Center</button>
+                <button class="desktop-nav-item" data-view="standings">Standings</button>
+                <button class="desktop-nav-item" data-view="trade-wire">Trade Wire</button>
+                <button class="desktop-nav-item" data-view="waiver-lab">Waiver Lab</button>
+                <button class="desktop-nav-item" data-view="media-room">Media Room</button>
+                <button class="desktop-nav-item" data-view="commissioner">Commissioner Tools</button>
+                <button class="desktop-nav-item" data-view="settings">League Settings</button>
+            </nav>
+
+            <section class="desktop-sidebar-card">
+                <p class="sidebar-card-title">Live Night Activity</p>
+                <ul class="sidebar-activity-list" id="activityTicker"></ul>
+            </section>
+
+            <section class="desktop-sidebar-card compact">
+                <p class="sidebar-card-title">Today's Reminders</p>
+                <ul class="sidebar-reminder-list">
+                    <li>Submit final injury report before 7:15 PM</li>
+                    <li>Trade review window closes in 3h 25m</li>
+                    <li>Set pick'em confidence points</li>
+                </ul>
+            </section>
+        </aside>
+
+        <main class="desktop-main">
+            <header class="desktop-header">
+                <div>
+                    <p class="desktop-header-kicker">Browser Command Center</p>
+                    <h2 id="desktopViewTitle">Overview</h2>
+                </div>
+                <div class="desktop-header-actions">
+                    <label class="desktop-search-wrapper" for="desktopSearchInput">
+                        <span>🔍</span>
+                        <input id="desktopSearchInput" type="search" placeholder="Search teams, managers, players">
+                    </label>
+                    <button class="btn btn-secondary desktop-header-button" type="button">Export Report</button>
+                    <button class="btn btn-primary desktop-header-button" type="button">Create Announcement</button>
+                </div>
+            </header>
+
+            <section class="desktop-content-grid">
+                <article class="desktop-card desktop-card-hero">
+                    <div class="desktop-card-headline-row">
+                        <h3>Prime Time Matchup Spotlight</h3>
+                        <span class="badge">Week 11</span>
                     </div>
-                </div>
-
-                <h1>Create Account</h1>
-                <div class="subtitle">Join the competition</div>
-                
-                <div class="form-group">
-                    <input type="text" placeholder="First Name">
-                </div>
-
-                <div class="form-group">
-                    <input type="text" placeholder="Last Name">
-                </div>
-
-                <div class="form-group">
-                    <input type="email" placeholder="Email">
-                </div>
-
-                <div class="form-group">
-                    <input type="tel" placeholder="Phone Number">
-                </div>
-
-                <button class="btn btn-primary" onclick="showScreen(3)">
-                    <span>Join a League</span>
-                </button>
-
-                <button class="btn btn-secondary" onclick="showScreen(3)">
-                    <span>Create a League</span>
-                </button>
-
-                <div class="powered-by">
-                    <div class="powered-by-text">Powered by</div>
-                    <div class="powered-logo">
-                        <div class="powered-icon">🏆</div>
-                        <span>The Season Never Ends</span>
+                    <div class="hero-scoreboard" id="heroScoreboard"></div>
+                    <div class="hero-meta-grid">
+                        <div>
+                            <p class="hero-meta-kicker">Venue</p>
+                            <p class="hero-meta-value">World's End Main Floor</p>
+                        </div>
+                        <div>
+                            <p class="hero-meta-kicker">Kickoff</p>
+                            <p class="hero-meta-value">8:15 PM ET</p>
+                        </div>
+                        <div>
+                            <p class="hero-meta-kicker">Weather</p>
+                            <p class="hero-meta-value">Clear, 62°F</p>
+                        </div>
+                        <div>
+                            <p class="hero-meta-kicker">Projection Delta</p>
+                            <p class="hero-meta-value text-accent">+7.4 Home</p>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
+                </article>
 
-        <!-- Screen 3: Join League Options -->
-        <div class="screen-wrapper" id="screen3">
-            <div class="screen">
-                <div class="logo-container">
-                    <div class="logo">
-                        <object type="image/svg+xml" data="images/logo.svg" class="logo-svg">
-                            <svg class="logo-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="100" cy="100" r="80" fill="#1A1A1A" stroke="#B91C1C" stroke-width="4"/>
-                                <ellipse cx="100" cy="100" rx="80" ry="40" fill="none" stroke="#B91C1C" stroke-width="2"/>
-                                <ellipse cx="100" cy="100" rx="40" ry="80" fill="none" stroke="#B91C1C" stroke-width="2"/>
-                                <line x1="20" y1="100" x2="180" y2="100" stroke="#B91C1C" stroke-width="2"/>
-                                <rect x="40" y="15" width="12" height="80" rx="6" fill="#8B4513" transform="rotate(-45 46 55)"/>
-                                <rect x="148" y="15" width="12" height="80" rx="6" fill="#8B4513" transform="rotate(45 154 55)"/>
-                                <circle cx="100" cy="100" r="15" fill="#FFFFFF"/>
-                                <path d="M 100 85 Q 90 95 100 105 Q 110 95 100 85" fill="#B91C1C"/>
-                                <path d="M 100 95 L 85 100 M 100 95 L 115 100" stroke="#B91C1C" stroke-width="2"/>
-                                <rect x="40" y="120" width="120" height="28" fill="#1A1A1A" stroke="#B91C1C" stroke-width="2"/>
-                                <text x="100" y="138" font-family="Teko, sans-serif" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">WORLD'S END</text>
-                                <text x="100" y="152" font-family="Teko, sans-serif" font-size="10" font-weight="600" fill="#DC2626" text-anchor="middle">SPORTS BAR</text>
-                            </svg>
-                        </object>
+                <article class="desktop-card">
+                    <div class="desktop-card-headline-row">
+                        <h3>League Momentum Index</h3>
+                        <button class="desktop-inline-button" type="button">View formula</button>
                     </div>
-                </div>
+                    <div id="momentumChart" class="desktop-bar-chart"></div>
+                </article>
 
-                <h1>Join a League</h1>
-                <div class="subtitle">Choose your competition type</div>
-
-                <button class="btn btn-secondary btn-large">
-                    <span>🏟️ World's End Tournament</span>
-                </button>
-
-                <button class="btn btn-primary btn-large" onclick="showScreen(4)">
-                    <span>🔒 Private League</span>
-                </button>
-
-                <div class="link-text">
-                    <a href="#" onclick="showScreen(2); return false;">← Back to account</a>
-                </div>
-
-                <div class="powered-by">
-                    <div class="powered-by-text">Powered by</div>
-                    <div class="powered-logo">
-                        <div class="powered-icon">🏆</div>
-                        <span>The Season Never Ends</span>
+                <article class="desktop-card">
+                    <div class="desktop-card-headline-row">
+                        <h3>Waiver Priority Matrix</h3>
+                        <button class="desktop-inline-button" type="button">Customize</button>
                     </div>
-                </div>
-            </div>
-        </div>
+                    <table class="desktop-table" id="waiverTable">
+                        <thead>
+                            <tr>
+                                <th>Priority</th>
+                                <th>Team</th>
+                                <th>Need</th>
+                                <th>Targets</th>
+                                <th>Budget</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </article>
 
-        <!-- Screen 4: Enter League Code -->
-        <div class="screen-wrapper" id="screen4">
-            <div class="screen">
-                <div class="logo-container">
-                    <div class="logo">
-                        <object type="image/svg+xml" data="images/logo.svg" class="logo-svg">
-                            <svg class="logo-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="100" cy="100" r="80" fill="#1A1A1A" stroke="#B91C1C" stroke-width="4"/>
-                                <ellipse cx="100" cy="100" rx="80" ry="40" fill="none" stroke="#B91C1C" stroke-width="2"/>
-                                <ellipse cx="100" cy="100" rx="40" ry="80" fill="none" stroke="#B91C1C" stroke-width="2"/>
-                                <line x1="20" y1="100" x2="180" y2="100" stroke="#B91C1C" stroke-width="2"/>
-                                <rect x="40" y="15" width="12" height="80" rx="6" fill="#8B4513" transform="rotate(-45 46 55)"/>
-                                <rect x="148" y="15" width="12" height="80" rx="6" fill="#8B4513" transform="rotate(45 154 55)"/>
-                                <circle cx="100" cy="100" r="15" fill="#FFFFFF"/>
-                                <path d="M 100 85 Q 90 95 100 105 Q 110 95 100 85" fill="#B91C1C"/>
-                                <path d="M 100 95 L 85 100 M 100 95 L 115 100" stroke="#B91C1C" stroke-width="2"/>
-                                <rect x="40" y="120" width="120" height="28" fill="#1A1A1A" stroke="#B91C1C" stroke-width="2"/>
-                                <text x="100" y="138" font-family="Teko, sans-serif" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">WORLD'S END</text>
-                                <text x="100" y="152" font-family="Teko, sans-serif" font-size="10" font-weight="600" fill="#DC2626" text-anchor="middle">SPORTS BAR</text>
-                            </svg>
-                        </object>
+                <article class="desktop-card">
+                    <div class="desktop-card-headline-row">
+                        <h3>Commissioner Queue</h3>
+                        <button class="desktop-inline-button" type="button">Bulk actions</button>
                     </div>
-                </div>
+                    <ul class="desktop-task-list" id="commissionerQueue"></ul>
+                </article>
 
-                <div class="badge">🔒 Private League</div>
-                <h1>Join Private League</h1>
-                <div class="subtitle">Enter your invite details</div>
-                
-                <div class="form-group">
-                    <input type="text" placeholder="Team Name" id="teamname">
-                </div>
-
-                <div class="form-group">
-                    <input type="text" placeholder="League Code" id="leaguecode" style="letter-spacing: 3px; text-transform: uppercase;">
-                </div>
-
-                <button class="btn btn-primary" onclick="alert('Joining league...')">
-                    <span>Enter League</span>
-                </button>
-
-                <div class="link-text">
-                    Don't have a code? <a href="#" onclick="showScreen(3); return false;">Choose different league</a>
-                </div>
-
-                <div class="powered-by">
-                    <div class="powered-by-text">Powered by</div>
-                    <div class="powered-logo">
-                        <div class="powered-icon">🏆</div>
-                        <span>The Season Never Ends</span>
+                <article class="desktop-card desktop-card-wide">
+                    <div class="desktop-card-headline-row">
+                        <h3>Cross-League Storylines</h3>
+                        <button class="desktop-inline-button" type="button">Open newsroom</button>
                     </div>
-                </div>
-            </div>
-        </div>
+                    <div class="desktop-story-grid" id="storyGrid"></div>
+                </article>
 
-        <!-- Navigation dots -->
-        <div class="navigation">
-            <div class="nav-dot active" onclick="showScreen(1)"></div>
-            <div class="nav-dot" onclick="showScreen(2)"></div>
-            <div class="nav-dot" onclick="showScreen(3)"></div>
-            <div class="nav-dot" onclick="showScreen(4)"></div>
-        </div>
+                <article class="desktop-card desktop-card-wide">
+                    <div class="desktop-card-headline-row">
+                        <h3>Data Center: Team Health & Efficiency</h3>
+                        <button class="desktop-inline-button" type="button">Download CSV</button>
+                    </div>
+                    <div class="desktop-metrics-grid" id="metricsGrid"></div>
+                </article>
+            </section>
+        </main>
     </div>
 
     <script src="app.js"></script>
