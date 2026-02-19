@@ -1,0 +1,1883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>World's End — League Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Teko:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0f;
+  --bg2: #111118;
+  --bg3: #17171f;
+  --bg4: #1e1e2a;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --text: #e8e8f0;
+  --text2: #9090a8;
+  --text3: #5a5a72;
+  --accent: #f5a623;
+  --accent2: #e8533a;
+  --accent3: #3a8ff5;
+  --green: #2ecc71;
+  --red: #e74c3c;
+  --purple: #9b59b6;
+  --sidebar-w: 260px;
+  --radius: 10px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.branding {
+  padding: 20px 18px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.branding-icon {
+  width: 40px; height: 40px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.branding-kicker {
+  font-size: 10px;
+  font-family: 'DM Mono', monospace;
+  color: var(--accent);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  line-height: 1;
+  margin-bottom: 3px;
+}
+.branding h1 {
+  font-family: 'Teko', sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  color: var(--text);
+}
+
+.nav-section-label {
+  padding: 14px 18px 6px;
+  font-size: 10px;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+
+.nav {
+  padding: 4px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  background: none;
+  border: none;
+  color: var(--text2);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s;
+  width: 100%;
+}
+.nav-item:hover { background: var(--bg3); color: var(--text); }
+.nav-item.active {
+  background: rgba(245,166,35,0.12);
+  color: var(--accent);
+}
+.nav-item .nav-icon { font-size: 15px; width: 20px; text-align: center; }
+.nav-item .nav-badge {
+  margin-left: auto;
+  background: var(--accent2);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 10px;
+  font-family: 'DM Mono', monospace;
+}
+
+.sidebar-card {
+  margin: 10px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+}
+.sidebar-card-title {
+  font-size: 10px;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 10px;
+}
+.activity-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text2);
+}
+.activity-item:last-child { border-bottom: none; }
+.activity-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+.activity-dot.green { background: var(--green); }
+.activity-dot.orange { background: var(--accent); }
+.activity-dot.red { background: var(--red); }
+.activity-dot.blue { background: var(--accent3); }
+
+.reminder-item {
+  font-size: 12px;
+  color: var(--text2);
+  padding: 5px 0;
+  border-bottom: 1px solid var(--border);
+  line-height: 1.4;
+}
+.reminder-item:last-child { border-bottom: none; }
+
+/* ── MAIN ── */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+  flex-shrink: 0;
+}
+.header-left { flex: 1; }
+.header-kicker {
+  font-size: 10px;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 3px;
+}
+.header h2 {
+  font-family: 'Teko', sans-serif;
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+.header-actions { display: flex; align-items: center; gap: 10px; }
+.search-wrap {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0 12px;
+}
+.search-wrap input {
+  background: none; border: none; outline: none;
+  color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 13px;
+  width: 200px; padding: 9px 0;
+}
+.search-wrap input::placeholder { color: var(--text3); }
+.btn {
+  padding: 9px 16px;
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s;
+}
+.btn-secondary {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  color: var(--text2);
+}
+.btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+.btn-primary { background: var(--accent); color: #000; font-weight: 700; }
+.btn-primary:hover { background: #f7b743; }
+.btn-danger { background: var(--red); color: #fff; }
+.btn-small { padding: 6px 12px; font-size: 12px; border-radius: 6px; }
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 24px;
+}
+
+/* ── VIEWS ── */
+.view { display: none; }
+.view.active { display: block; }
+
+/* ── CARDS ── */
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+}
+.card-title {
+  font-family: 'Teko', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  margin-bottom: 2px;
+}
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.inline-btn {
+  background: none; border: none; cursor: pointer;
+  color: var(--accent); font-family: 'DM Sans', sans-serif;
+  font-size: 12px; font-weight: 600;
+  padding: 4px 8px; border-radius: 6px;
+  transition: background 0.15s;
+}
+.inline-btn:hover { background: rgba(245,166,35,0.1); }
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-family: 'DM Mono', monospace;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+.badge-accent { background: rgba(245,166,35,0.15); color: var(--accent); }
+.badge-green { background: rgba(46,204,113,0.15); color: var(--green); }
+.badge-red { background: rgba(231,76,60,0.15); color: var(--red); }
+.badge-blue { background: rgba(58,143,245,0.15); color: var(--accent3); }
+.badge-purple { background: rgba(155,89,182,0.15); color: var(--purple); }
+
+/* ── OVERVIEW ── */
+.overview-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto;
+  gap: 16px;
+}
+.span2 { grid-column: span 2; }
+.span3 { grid-column: span 3; }
+
+.hero-scoreboard {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 20px 0;
+  gap: 16px;
+}
+.hero-team { text-align: center; flex: 1; }
+.hero-team-name {
+  font-family: 'Teko', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.hero-team-score {
+  font-family: 'Teko', sans-serif;
+  font-size: 56px;
+  font-weight: 700;
+  line-height: 1;
+}
+.hero-team-score.leading { color: var(--accent); }
+.hero-vs {
+  font-family: 'Teko', sans-serif;
+  font-size: 22px;
+  color: var(--text3);
+  font-weight: 600;
+}
+.hero-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+.hero-meta-kicker {
+  font-size: 10px;
+  font-family: 'DM Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text3);
+  margin-bottom: 4px;
+}
+.hero-meta-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+.hero-meta-value.accent { color: var(--accent); }
+
+/* momentum bars */
+.bar-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.bar-row:last-child { margin-bottom: 0; }
+.bar-label { width: 110px; font-size: 12px; color: var(--text2); flex-shrink: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bar-track { flex: 1; background: var(--bg4); border-radius: 4px; height: 8px; overflow: hidden; }
+.bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--accent2), var(--accent));
+  transition: width 0.6s ease;
+}
+.bar-val { width: 40px; text-align: right; font-size: 12px; font-family: 'DM Mono', monospace; color: var(--text2); flex-shrink: 0; }
+
+/* tables */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.data-table th {
+  text-align: left;
+  padding: 6px 10px;
+  font-size: 10px;
+  font-family: 'DM Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text3);
+  border-bottom: 1px solid var(--border);
+}
+.data-table td {
+  padding: 10px 10px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text2);
+}
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: var(--bg3); color: var(--text); }
+.data-table .td-name { color: var(--text); font-weight: 600; }
+.data-table .td-mono { font-family: 'DM Mono', monospace; }
+
+/* task list */
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.task-item:last-child { border-bottom: none; }
+.task-icon { font-size: 16px; }
+.task-body { flex: 1; }
+.task-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+.task-sub { font-size: 11px; color: var(--text3); }
+.task-action { font-size: 11px; }
+
+/* story grid */
+.story-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.story-item {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px;
+}
+.story-tag {
+  font-size: 10px;
+  font-family: 'DM Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.story-headline {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.4;
+  margin-bottom: 6px;
+}
+.story-meta { font-size: 11px; color: var(--text3); }
+
+/* metrics grid */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+.metric-box {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+}
+.metric-team { font-size: 11px; font-weight: 700; color: var(--text); margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.metric-val {
+  font-family: 'Teko', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+.metric-val.green { color: var(--green); }
+.metric-val.red { color: var(--red); }
+.metric-val.accent { color: var(--accent); }
+.metric-label { font-size: 10px; color: var(--text3); font-family: 'DM Mono', monospace; }
+
+/* ── MATCH CENTER ── */
+.matchups-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.matchup-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  transition: border-color 0.2s;
+}
+.matchup-card:hover { border-color: var(--accent); }
+.matchup-card.featured { border-color: rgba(245,166,35,0.4); background: rgba(245,166,35,0.04); }
+.matchup-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 14px;
+}
+.matchup-week { font-size: 10px; font-family: 'DM Mono', monospace; color: var(--text3); letter-spacing: 0.1em; }
+.matchup-teams {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 12px;
+}
+.matchup-team { flex: 1; }
+.matchup-team-name { font-family: 'Teko', sans-serif; font-size: 17px; font-weight: 600; color: var(--text); }
+.matchup-team-manager { font-size: 11px; color: var(--text3); }
+.matchup-score-block { text-align: center; flex-shrink: 0; }
+.matchup-scores {
+  display: flex; align-items: center; gap: 8px;
+}
+.matchup-score-val {
+  font-family: 'Teko', sans-serif; font-size: 36px; font-weight: 700; line-height: 1;
+}
+.matchup-score-val.lead { color: var(--accent); }
+.matchup-score-val.trail { color: var(--text3); }
+.matchup-score-dash { color: var(--text3); font-family: 'Teko', sans-serif; font-size: 22px; }
+.matchup-proj { font-size: 10px; font-family: 'DM Mono', monospace; color: var(--text3); text-align: center; margin-top: 2px; }
+.matchup-players { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+.mp-row { display: flex; align-items: center; gap: 8px; padding: 5px 0; }
+.mp-pos { width: 28px; text-align: center; font-size: 10px; font-family: 'DM Mono', monospace; color: var(--accent); font-weight: 700; }
+.mp-name { flex: 1; font-size: 12px; color: var(--text); font-weight: 500; }
+.mp-team { font-size: 11px; color: var(--text3); }
+.mp-pts { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--green); font-weight: 700; }
+.mp-status { font-size: 10px; }
+
+/* Live ticker */
+.live-ticker {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 8px; padding: 0 14px;
+  display: flex; align-items: center; gap: 16px;
+  height: 38px; overflow: hidden; margin-bottom: 16px;
+}
+.live-tag {
+  background: var(--red); color: #fff; font-size: 10px; font-weight: 700;
+  font-family: 'DM Mono', monospace; letter-spacing: 0.08em;
+  padding: 2px 8px; border-radius: 4px; flex-shrink: 0;
+}
+.live-scroll {
+  flex: 1; overflow: hidden; white-space: nowrap; font-size: 12px; color: var(--text2);
+}
+@keyframes tickerScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.live-scroll-inner {
+  display: inline-flex; gap: 40px;
+  animation: tickerScroll 30s linear infinite;
+}
+
+/* ── STANDINGS ── */
+.standings-wrap { display: grid; grid-template-columns: 1fr 320px; gap: 16px; }
+.standings-table-wrap { }
+.standing-row { display: grid; grid-template-columns: 30px 1fr 60px 60px 60px 80px 80px; align-items: center; gap: 8px; padding: 10px 14px; border-bottom: 1px solid var(--border); }
+.standing-row.header { background: var(--bg3); border-radius: 8px 8px 0 0; border-bottom: 2px solid var(--border2); }
+.standing-row.header span { font-size: 10px; font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text3); }
+.standing-rank { font-family: 'Teko', sans-serif; font-size: 18px; color: var(--text3); font-weight: 600; }
+.standing-rank.top { color: var(--accent); }
+.standing-team-name { font-weight: 600; font-size: 13px; }
+.standing-team-manager { font-size: 11px; color: var(--text3); }
+.standing-num { font-family: 'DM Mono', monospace; font-size: 13px; text-align: center; }
+.standing-num.win { color: var(--green); }
+.standing-num.lose { color: var(--red); }
+.standing-streak { font-size: 11px; font-family: 'DM Mono', monospace; padding: 2px 8px; border-radius: 4px; text-align: center; }
+.standing-streak.w { background: rgba(46,204,113,0.15); color: var(--green); }
+.standing-streak.l { background: rgba(231,76,60,0.15); color: var(--red); }
+.standing-pts { font-family: 'DM Mono', monospace; font-size: 13px; text-align: right; }
+.playoffs-line { border-top: 2px dashed rgba(245,166,35,0.4); margin: 0; }
+.standings-sidebar-card { }
+
+/* playoff race */
+.playoff-bar-row { margin-bottom: 12px; }
+.playoff-bar-label { display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 12px; }
+.playoff-bar-track { height: 10px; background: var(--bg4); border-radius: 5px; overflow: hidden; }
+.playoff-bar-fill { height: 100%; border-radius: 5px; }
+
+/* ── TRADE WIRE ── */
+.trade-layout { display: grid; grid-template-columns: 1fr 380px; gap: 16px; }
+.trade-item {
+  background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 16px; margin-bottom: 12px; transition: border-color 0.2s;
+}
+.trade-item:hover { border-color: var(--accent3); }
+.trade-item.pending { border-left: 3px solid var(--accent); }
+.trade-item.rejected { border-left: 3px solid var(--red); opacity: 0.7; }
+.trade-item.completed { border-left: 3px solid var(--green); }
+.trade-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.trade-id { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text3); }
+.trade-teams { display: flex; align-items: center; gap: 16px; }
+.trade-side { flex: 1; }
+.trade-side-label { font-size: 10px; font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text3); margin-bottom: 6px; }
+.trade-side-team { font-weight: 700; font-size: 13px; color: var(--text); margin-bottom: 4px; }
+.trade-player-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 6px; padding: 4px 8px; margin: 3px 3px 3px 0;
+  font-size: 12px; color: var(--text2);
+}
+.trade-arrow { font-size: 20px; color: var(--accent3); flex-shrink: 0; }
+.trade-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+.trade-meta { font-size: 11px; color: var(--text3); }
+.trade-actions { display: flex; gap: 8px; }
+
+/* Trade calculator */
+.calc-title { font-family: 'Teko', sans-serif; font-size: 18px; margin-bottom: 12px; }
+.calc-side { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 12px; margin-bottom: 10px; }
+.calc-side-label { font-size: 10px; font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text3); margin-bottom: 8px; }
+.calc-player-row { display: flex; align-items: center; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
+.calc-player-row:last-child { border-bottom: none; }
+.calc-player-name { font-weight: 600; color: var(--text); }
+.calc-player-val { font-family: 'DM Mono', monospace; color: var(--green); font-weight: 700; }
+.calc-verdict {
+  text-align: center; padding: 14px; background: var(--bg3); border-radius: 8px;
+  border: 1px solid var(--border);
+}
+.calc-verdict-label { font-size: 11px; color: var(--text3); margin-bottom: 4px; }
+.calc-verdict-result { font-family: 'Teko', sans-serif; font-size: 22px; font-weight: 700; }
+
+/* ── WAIVER LAB ── */
+.waiver-layout { display: grid; grid-template-columns: 1fr 320px; gap: 16px; }
+.waiver-filters {
+  display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap;
+}
+.filter-btn {
+  padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600;
+  border: 1px solid var(--border2); background: var(--bg3);
+  color: var(--text2); cursor: pointer; transition: all 0.15s;
+  font-family: 'DM Sans', sans-serif;
+}
+.filter-btn:hover, .filter-btn.active { background: var(--accent); color: #000; border-color: var(--accent); }
+
+.waiver-player-row {
+  display: grid; grid-template-columns: 30px 1fr 70px 70px 70px 80px 100px;
+  align-items: center; gap: 8px;
+  padding: 10px 14px; border-bottom: 1px solid var(--border);
+}
+.waiver-player-row.header { background: var(--bg3); border-radius: 8px 8px 0 0; border-bottom: 2px solid var(--border2); }
+.waiver-player-row.header span { font-size: 10px; font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text3); }
+.waiver-rank { font-family: 'Teko', sans-serif; font-size: 16px; color: var(--text3); }
+.w-pos-tag { display: inline-block; width: 28px; text-align: center; font-size: 10px; font-family: 'DM Mono', monospace; font-weight: 700; padding: 2px 0; border-radius: 4px; }
+.w-pos-tag.QB { background: rgba(245,166,35,0.15); color: var(--accent); }
+.w-pos-tag.RB { background: rgba(46,204,113,0.15); color: var(--green); }
+.w-pos-tag.WR { background: rgba(58,143,245,0.15); color: var(--accent3); }
+.w-pos-tag.TE { background: rgba(155,89,182,0.15); color: var(--purple); }
+.w-pos-tag.K  { background: rgba(232,83,58,0.15); color: var(--accent2); }
+.w-pts { font-family: 'DM Mono', monospace; font-size: 13px; }
+.w-trend { font-size: 11px; }
+.w-trend.up { color: var(--green); }
+.w-trend.down { color: var(--red); }
+.waiver-add-btn {
+  padding: 5px 12px; border-radius: 6px; font-size: 11px; font-weight: 700;
+  background: rgba(58,143,245,0.15); border: 1px solid rgba(58,143,245,0.3);
+  color: var(--accent3); cursor: pointer; font-family: 'DM Sans', sans-serif;
+  transition: all 0.15s; white-space: nowrap;
+}
+.waiver-add-btn:hover { background: var(--accent3); color: #fff; }
+
+/* insights */
+.insight-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 10px 0; border-bottom: 1px solid var(--border);
+}
+.insight-item:last-child { border-bottom: none; }
+.insight-icon { font-size: 18px; flex-shrink: 0; }
+.insight-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+.insight-body { font-size: 12px; color: var(--text2); line-height: 1.4; }
+
+/* ── MEDIA ROOM ── */
+.media-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.media-card {
+  background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden;
+}
+.media-thumb {
+  height: 120px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 40px;
+  position: relative;
+}
+.media-thumb.podcast { background: linear-gradient(135deg, #1a0a2e, #2d1a4a); }
+.media-thumb.video { background: linear-gradient(135deg, #0a1a2e, #1a3a5a); }
+.media-thumb.article { background: linear-gradient(135deg, #1a0a0a, #3a1a1a); }
+.media-play-btn {
+  position: absolute; bottom: 10px; right: 10px;
+  background: rgba(255,255,255,0.15); border: none; color: #fff;
+  font-size: 11px; padding: 4px 10px; border-radius: 20px; cursor: pointer;
+}
+.media-body { padding: 14px; }
+.media-tag { font-size: 10px; font-family: 'DM Mono', monospace; color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; }
+.media-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 6px; line-height: 1.35; }
+.media-meta { font-size: 11px; color: var(--text3); }
+
+.poll-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; }
+.poll-q { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 14px; }
+.poll-option { margin-bottom: 10px; }
+.poll-opt-label { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px; }
+.poll-opt-name { color: var(--text); }
+.poll-opt-pct { font-family: 'DM Mono', monospace; color: var(--text2); font-size: 12px; }
+.poll-track { height: 8px; background: var(--bg4); border-radius: 4px; overflow: hidden; }
+.poll-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--accent2), var(--accent)); }
+
+/* chat */
+.chat-wrap { display: grid; grid-template-columns: 1fr 320px; gap: 16px; }
+.chat-messages { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; height: 300px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+.chat-msg { display: flex; gap: 10px; }
+.chat-msg.own { flex-direction: row-reverse; }
+.chat-avatar { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+.chat-bubble {
+  max-width: 70%; background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 10px; padding: 8px 12px;
+}
+.chat-msg.own .chat-bubble { background: rgba(245,166,35,0.12); border-color: rgba(245,166,35,0.2); }
+.chat-msg-name { font-size: 10px; font-family: 'DM Mono', monospace; color: var(--text3); margin-bottom: 3px; }
+.chat-msg-text { font-size: 13px; color: var(--text); line-height: 1.4; }
+.chat-input-row { display: flex; gap: 8px; margin-top: 10px; }
+.chat-input {
+  flex: 1; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+  padding: 9px 14px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 13px; outline: none;
+}
+.chat-input::placeholder { color: var(--text3); }
+.chat-input:focus { border-color: var(--accent); }
+
+/* ── COMMISSIONER ── */
+.comm-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.comm-full { grid-column: span 2; }
+.comm-action-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 0; border-bottom: 1px solid var(--border);
+}
+.comm-action-item:last-child { border-bottom: none; }
+.comm-action-icon { font-size: 22px; width: 36px; text-align: center; flex-shrink: 0; }
+.comm-action-body { flex: 1; }
+.comm-action-title { font-weight: 600; font-size: 14px; color: var(--text); }
+.comm-action-sub { font-size: 12px; color: var(--text3); margin-top: 2px; }
+.comm-action-btn { flex-shrink: 0; }
+
+.violation-item {
+  background: var(--bg3); border: 1px solid var(--border); border-radius: 8px;
+  padding: 12px 14px; margin-bottom: 8px;
+  display: flex; align-items: center; gap: 12px;
+}
+.violation-icon { font-size: 18px; }
+.violation-body { flex: 1; }
+.violation-title { font-size: 13px; font-weight: 600; color: var(--text); }
+.violation-sub { font-size: 11px; color: var(--text3); margin-top: 2px; }
+.violation-severity { font-size: 11px; font-family: 'DM Mono', monospace; }
+
+/* ── SETTINGS ── */
+.settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.settings-section { }
+.settings-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 0; border-bottom: 1px solid var(--border);
+}
+.settings-row:last-child { border-bottom: none; }
+.settings-label { font-size: 13px; color: var(--text); font-weight: 500; }
+.settings-sub { font-size: 11px; color: var(--text3); margin-top: 2px; }
+.settings-val { font-size: 13px; font-family: 'DM Mono', monospace; color: var(--accent); }
+.toggle {
+  width: 40px; height: 22px; border-radius: 11px;
+  background: var(--bg4); border: 1px solid var(--border2);
+  cursor: pointer; position: relative; transition: background 0.2s;
+}
+.toggle.on { background: var(--accent); border-color: var(--accent); }
+.toggle::after {
+  content: ''; position: absolute; top: 2px; left: 2px;
+  width: 16px; height: 16px; border-radius: 50%; background: #fff;
+  transition: left 0.2s;
+}
+.toggle.on::after { left: 20px; }
+select.settings-select {
+  background: var(--bg3); border: 1px solid var(--border2); color: var(--text);
+  font-family: 'DM Sans', sans-serif; font-size: 12px; padding: 5px 10px;
+  border-radius: 6px; outline: none; cursor: pointer;
+}
+select.settings-select:focus { border-color: var(--accent); }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--border2); }
+
+/* section header row */
+.section-divider {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 14px;
+}
+.section-divider-title {
+  font-family: 'Teko', sans-serif; font-size: 22px; font-weight: 600;
+  letter-spacing: 0.02em; white-space: nowrap;
+}
+.section-divider-line { flex: 1; height: 1px; background: var(--border); }
+
+/* stat pill */
+.stat-pill {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 20px; padding: 3px 10px; font-size: 11px; color: var(--text2);
+}
+.stat-pill strong { color: var(--text); font-size: 12px; }
+
+/* color highlight rows */
+.highlight-gold { background: rgba(245,166,35,0.06); }
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="branding">
+    <div class="branding-icon">🏈</div>
+    <div>
+      <p class="branding-kicker">World's End Bar</p>
+      <h1>League Hub</h1>
+    </div>
+  </div>
+
+  <p class="nav-section-label">Main</p>
+  <nav class="nav">
+    <button class="nav-item active" data-view="overview"><span class="nav-icon">📊</span> Overview</button>
+    <button class="nav-item" data-view="match-center"><span class="nav-icon">🏟️</span> Match Center <span class="nav-badge">LIVE</span></button>
+    <button class="nav-item" data-view="standings"><span class="nav-icon">🏆</span> Standings</button>
+    <button class="nav-item" data-view="trade-wire"><span class="nav-icon">🔄</span> Trade Wire <span class="nav-badge">3</span></button>
+    <button class="nav-item" data-view="waiver-lab"><span class="nav-icon">🧪</span> Waiver Lab</button>
+  </nav>
+  <p class="nav-section-label">Operations</p>
+  <nav class="nav">
+    <button class="nav-item" data-view="media-room"><span class="nav-icon">🎙️</span> Media Room</button>
+    <button class="nav-item" data-view="commissioner"><span class="nav-icon">⚖️</span> Commissioner <span class="nav-badge">2</span></button>
+    <button class="nav-item" data-view="settings"><span class="nav-icon">⚙️</span> League Settings</button>
+  </nav>
+
+  <div class="sidebar-card">
+    <p class="sidebar-card-title">Live Activity</p>
+    <div id="activityFeed"></div>
+  </div>
+
+  <div class="sidebar-card">
+    <p class="sidebar-card-title">Today's Reminders</p>
+    <p class="reminder-item">Submit injury report before 7:15 PM</p>
+    <p class="reminder-item">Trade review closes in <strong style="color:var(--accent)">3h 25m</strong></p>
+    <p class="reminder-item">Set pick'em confidence points</p>
+    <p class="reminder-item">Waivers process Thursday 12 AM</p>
+  </div>
+</aside>
+
+<div class="main">
+  <header class="header">
+    <div class="header-left">
+      <p class="header-kicker">Browser Command Center</p>
+      <h2 id="pageTitle">Overview</h2>
+    </div>
+    <div class="header-actions">
+      <div class="search-wrap">
+        <span style="color:var(--text3)">🔍</span>
+        <input type="search" placeholder="Search teams, players, managers…">
+      </div>
+      <button class="btn btn-secondary">Export Report</button>
+      <button class="btn btn-primary">+ Announcement</button>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- ═══════════ OVERVIEW ═══════════ -->
+    <div class="view active" id="view-overview">
+      <div class="overview-grid">
+
+        <!-- Hero matchup -->
+        <article class="card span2">
+          <div class="card-header">
+            <span class="card-title">🔥 Prime Time Matchup Spotlight</span>
+            <span class="badge badge-accent">WEEK 11 • LIVE</span>
+          </div>
+          <div class="hero-scoreboard">
+            <div class="hero-team">
+              <div class="hero-team-name">GRIDIRON REAPERS</div>
+              <div class="hero-team-score leading">143.7</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:4px">Mgr: DaQuon Mitchell</div>
+            </div>
+            <div>
+              <div class="hero-vs">VS</div>
+              <div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--text3);margin-top:4px">Q4 • 6:22</div>
+            </div>
+            <div class="hero-team">
+              <div class="hero-team-name">THUNDER CHICKENS</div>
+              <div class="hero-team-score" style="color:var(--text3)">131.2</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:4px">Mgr: Priya Rao</div>
+            </div>
+          </div>
+          <div class="hero-meta-grid">
+            <div><p class="hero-meta-kicker">Venue</p><p class="hero-meta-value">World's End Main Floor</p></div>
+            <div><p class="hero-meta-kicker">Kickoff</p><p class="hero-meta-value">8:15 PM ET</p></div>
+            <div><p class="hero-meta-kicker">Weather</p><p class="hero-meta-value">Clear 62°F</p></div>
+            <div><p class="hero-meta-kicker">Projection Delta</p><p class="hero-meta-value accent">+12.5 Home</p></div>
+          </div>
+        </article>
+
+        <!-- Stat highlight boxes -->
+        <article class="card">
+          <div class="card-header"><span class="card-title">Week 11 Pulse</span></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <div class="metric-box"><div class="metric-team">High Score</div><div class="metric-val green">148.3</div><div class="metric-label">Fantasy Kings</div></div>
+            <div class="metric-box"><div class="metric-team">Low Score</div><div class="metric-val red">72.1</div><div class="metric-label">Last Place Larry</div></div>
+            <div class="metric-box"><div class="metric-team">Top Player</div><div class="metric-val accent">42.6</div><div class="metric-label">J. Jefferson</div></div>
+            <div class="metric-box"><div class="metric-team">Biggest Bust</div><div class="metric-val red">1.4</div><div class="metric-label">Ceedee Lamb</div></div>
+          </div>
+        </article>
+
+        <!-- Momentum chart -->
+        <article class="card span2">
+          <div class="card-header"><span class="card-title">League Momentum Index</span><button class="inline-btn">View formula</button></div>
+          <div id="momentumChart"></div>
+        </article>
+
+        <!-- Waiver Priority Matrix -->
+        <article class="card">
+          <div class="card-header"><span class="card-title">Waiver Priority Matrix</span><button class="inline-btn">Customize</button></div>
+          <table class="data-table" id="waiverTable">
+            <thead><tr><th>#</th><th>Team</th><th>Need</th><th>Budget</th></tr></thead>
+            <tbody id="waiverTableBody"></tbody>
+          </table>
+        </article>
+
+        <!-- Commissioner Queue -->
+        <article class="card">
+          <div class="card-header"><span class="card-title">Commissioner Queue</span><button class="inline-btn">Bulk actions</button></div>
+          <div id="commQueue"></div>
+        </article>
+
+        <!-- Storylines -->
+        <article class="card span3">
+          <div class="card-header"><span class="card-title">Cross-League Storylines</span><button class="inline-btn">Open newsroom</button></div>
+          <div class="story-grid" id="storyGrid"></div>
+        </article>
+
+        <!-- Data Center -->
+        <article class="card span3">
+          <div class="card-header"><span class="card-title">Data Center: Team Health & Efficiency</span><button class="inline-btn">Download CSV</button></div>
+          <div class="metrics-grid" id="metricsGrid"></div>
+        </article>
+
+      </div>
+    </div><!-- /overview -->
+
+    <!-- ═══════════ MATCH CENTER ═══════════ -->
+    <div class="view" id="view-match-center">
+      <div class="live-ticker">
+        <span class="live-tag">● LIVE</span>
+        <div class="live-scroll"><span class="live-scroll-inner" id="tickerInner"></span></div>
+      </div>
+
+      <div class="section-divider"><span class="section-divider-title">Featured Matchup</span><div class="section-divider-line"></div></div>
+      <div style="margin-bottom:20px" id="featuredMatchup"></div>
+
+      <div class="section-divider"><span class="section-divider-title">All Week 11 Matchups</span><div class="section-divider-line"></div><span class="badge badge-accent">6 Games</span></div>
+      <div class="matchups-grid" id="matchupsGrid"></div>
+    </div>
+
+    <!-- ═══════════ STANDINGS ═══════════ -->
+    <div class="view" id="view-standings">
+      <div class="standings-wrap">
+        <div>
+          <div class="card" style="padding:0;overflow:hidden">
+            <div id="standingsTable"></div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div class="card">
+            <div class="card-header"><span class="card-title">Playoff Race</span><span class="badge badge-green">Top 6 Qualify</span></div>
+            <div id="playoffRace"></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><span class="card-title">Points Leaders</span></div>
+            <div id="pointsLeaders"></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><span class="card-title">Last 3 Weeks Form</span></div>
+            <div id="formGuide"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ TRADE WIRE ═══════════ -->
+    <div class="view" id="view-trade-wire">
+      <div class="trade-layout">
+        <div>
+          <div class="section-divider" style="margin-bottom:14px"><span class="section-divider-title">Pending Trades</span><div class="section-divider-line"></div><span class="badge badge-accent">3 Pending</span></div>
+          <div id="pendingTrades"></div>
+          <div class="section-divider" style="margin-bottom:14px;margin-top:20px"><span class="section-divider-title">Recent History</span><div class="section-divider-line"></div></div>
+          <div id="completedTrades"></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div class="card">
+            <p class="calc-title">⚖️ Trade Calculator</p>
+            <div class="calc-side">
+              <p class="calc-side-label">Team A Sending</p>
+              <div class="calc-player-row"><span class="calc-player-name">Davante Adams</span><span class="calc-player-val">88.4</span></div>
+              <div class="calc-player-row"><span class="calc-player-name">Tony Pollard</span><span class="calc-player-val">71.2</span></div>
+              <div class="calc-player-row" style="border-top:1px solid var(--border);padding-top:6px"><span style="font-weight:700;font-size:13px;color:var(--text)">Total</span><span class="calc-player-val" style="font-size:16px">159.6</span></div>
+            </div>
+            <div style="text-align:center;padding:4px 0;font-size:18px">⇅</div>
+            <div class="calc-side">
+              <p class="calc-side-label">Team B Sending</p>
+              <div class="calc-player-row"><span class="calc-player-name">Stefon Diggs</span><span class="calc-player-val" style="color:var(--green)">91.7</span></div>
+              <div class="calc-player-row"><span class="calc-player-name">D'Andre Swift</span><span class="calc-player-val" style="color:var(--green)">78.3</span></div>
+              <div class="calc-player-row" style="border-top:1px solid var(--border);padding-top:6px"><span style="font-weight:700;font-size:13px;color:var(--text)">Total</span><span class="calc-player-val" style="font-size:16px;color:var(--green)">170.0</span></div>
+            </div>
+            <div class="calc-verdict" style="margin-top:12px">
+              <div class="calc-verdict-label">Verdict</div>
+              <div class="calc-verdict-result" style="color:var(--green)">SLIGHT ADVANTAGE — TEAM B</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:4px">Delta: +10.4 pts value</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><span class="card-title">Most Traded Players</span></div>
+            <div id="mostTraded"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ WAIVER LAB ═══════════ -->
+    <div class="view" id="view-waiver-lab">
+      <div class="waiver-layout">
+        <div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+            <div class="waiver-filters">
+              <button class="filter-btn active">All</button>
+              <button class="filter-btn">QB</button>
+              <button class="filter-btn">RB</button>
+              <button class="filter-btn">WR</button>
+              <button class="filter-btn">TE</button>
+              <button class="filter-btn">K</button>
+              <button class="filter-btn">DEF</button>
+            </div>
+            <div style="display:flex;gap:8px">
+              <span class="stat-pill">Waivers process <strong>Thu 12 AM</strong></span>
+              <span class="stat-pill">Budget: <strong style="color:var(--accent)">$850</strong></span>
+            </div>
+          </div>
+          <div class="card" style="padding:0;overflow:hidden">
+            <div id="waiverList"></div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div class="card">
+            <div class="card-header"><span class="card-title">🧠 AI Insights</span><span class="badge badge-blue">GPT-Powered</span></div>
+            <div id="waiverInsights"></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><span class="card-title">My Waiver Claims</span></div>
+            <div id="myClaims"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ MEDIA ROOM ═══════════ -->
+    <div class="view" id="view-media-room">
+      <div class="section-divider" style="margin-bottom:14px"><span class="section-divider-title">Latest Content</span><div class="section-divider-line"></div></div>
+      <div class="media-grid" id="mediaGrid"></div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+        <div class="poll-card" id="pollCard"></div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">Power Rankings — Week 11</span><button class="inline-btn">History</button></div>
+          <div id="powerRankings"></div>
+        </div>
+      </div>
+
+      <div class="chat-wrap">
+        <div class="card" style="padding:0;overflow:hidden">
+          <div style="padding:14px;border-bottom:1px solid var(--border)"><span class="card-title">💬 League Chat</span></div>
+          <div class="chat-messages" id="chatMessages"></div>
+          <div style="padding:10px 14px;border-top:1px solid var(--border)">
+            <div class="chat-input-row">
+              <input class="chat-input" placeholder="Send a message to the league…" />
+              <button class="btn btn-primary btn-small">Send</button>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">Notable Moments</span></div>
+          <div id="notableMoments"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ COMMISSIONER ═══════════ -->
+    <div class="view" id="view-commissioner">
+      <div class="comm-layout">
+        <div class="card">
+          <div class="card-header"><span class="card-title">🚨 Pending Actions</span><span class="badge badge-red">2 Urgent</span></div>
+          <div id="pendingActions"></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">🔧 Quick Tools</span></div>
+          <div id="quickTools"></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">📋 Violation Log</span><button class="inline-btn">Clear all</button></div>
+          <div id="violationLog"></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">📣 Announcements</span><button class="btn btn-primary btn-small">+ New</button></div>
+          <div id="announcements"></div>
+        </div>
+        <div class="card comm-full">
+          <div class="card-header"><span class="card-title">📊 League Audit — Season Overview</span><button class="inline-btn">Full report</button></div>
+          <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px" id="auditStats"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ SETTINGS ═══════════ -->
+    <div class="view" id="view-settings">
+      <div class="settings-grid">
+        <div class="card">
+          <div class="card-header"><span class="card-title">⚙️ Scoring Settings</span></div>
+          <div id="scoringSettings"></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">📅 Season Schedule</span></div>
+          <div id="scheduleSettings"></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">🔀 Roster & Lineup</span></div>
+          <div id="rosterSettings"></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">💰 Draft & Money</span></div>
+          <div id="draftSettings"></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">🔔 Notifications</span></div>
+          <div id="notifSettings"></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">🔒 Privacy & Access</span></div>
+          <div id="privacySettings"></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<script>
+// ─── DATA ───────────────────────────────────────────────────────────
+const teams = [
+  { name: "Gridiron Reapers",   manager: "DaQuon Mitchell", w:8, l:2, pf:1426.8, pa:1298.3, streak:"W3", rank:1 },
+  { name: "Fantasy Kings",      manager: "Marcus Webb",      w:7, l:3, pf:1398.4, pa:1312.1, streak:"W2", rank:2 },
+  { name: "Thunder Chickens",   manager: "Priya Rao",        w:7, l:3, pf:1367.2, pa:1340.8, streak:"L1", rank:3 },
+  { name: "Steel Curtain FC",   manager: "Tyrell Booker",    w:6, l:4, pf:1344.7, pa:1289.5, streak:"W1", rank:4 },
+  { name: "Blitz Brigade",      manager: "Sam Cho",          w:6, l:4, pf:1322.1, pa:1301.4, streak:"W4", rank:5 },
+  { name: "Touchdown Bandits",  manager: "Lena Vasquez",     w:5, l:5, pf:1280.9, pa:1355.2, streak:"L2", rank:6 },
+  { name: "Meme Machine",       manager: "Devon Clarke",     w:4, l:6, pf:1244.3, pa:1398.1, streak:"L3", rank:7 },
+  { name: "Bye Week Enjoyers",  manager: "Keisha Tran",      w:4, l:6, pf:1218.6, pa:1401.2, streak:"W1", rank:8 },
+  { name: "Deep Ball Divers",   manager: "Russ Hoffman",     w:3, l:7, pf:1189.4, pa:1422.7, streak:"L2", rank:9 },
+  { name: "Kicker Dependent",   manager: "Aisha Monroe",     w:2, l:8, pf:1154.1, pa:1488.9, streak:"L5", rank:10 },
+  { name: "Auto-Draft Disaster",manager: "Jake Patel",       w:2, l:8, pf:1132.7, pa:1467.3, streak:"L4", rank:11 },
+  { name: "Last Place Larry",   manager: "Connor Miles",     w:1, l:9, pf:1098.3, pa:1502.8, streak:"L6", rank:12 },
+];
+
+const matchups = [
+  { home: teams[0], homeScore: 143.7, away: teams[2], awayScore: 131.2, projHome: 152.1, projAway: 138.4, featured: true },
+  { home: teams[1], homeScore: 148.3, away: teams[3], awayScore: 119.8, projHome: 144.2, projAway: 128.0 },
+  { home: teams[4], homeScore: 112.4, away: teams[5], awayScore: 124.6, projHome: 138.5, projAway: 121.3 },
+  { home: teams[6], homeScore: 98.2,  away: teams[7], awayScore: 103.7, projHome: 118.4, projAway: 110.2 },
+  { home: teams[8], homeScore: 88.6,  away: teams[9], awayScore: 72.1,  projHome: 112.3, projAway: 105.8 },
+  { home: teams[10],homeScore: 94.3,  away: teams[11],awayScore: 80.5,  projHome: 120.1, projAway: 98.4 },
+];
+
+const waiverPlayers = [
+  { rank:1, name:"Rashee Rice",      nfl:"KC",   pos:"WR", pts:24.8, owned:"34%", trend:"up",   faab:"$38" },
+  { rank:2, name:"Jaylen Warren",    nfl:"PIT",  pos:"RB", pts:22.1, owned:"28%", trend:"up",   faab:"$31" },
+  { rank:3, name:"Elijah Moore",     nfl:"CLE",  pos:"WR", pts:18.4, owned:"41%", trend:"up",   faab:"$22" },
+  { rank:4, name:"Juwan Johnson",    nfl:"NO",   pos:"TE", pts:16.7, owned:"19%", trend:"up",   faab:"$18" },
+  { rank:5, name:"Zach Charbonnet",  nfl:"SEA",  pos:"RB", pts:21.3, owned:"62%", trend:"down", faab:"$15" },
+  { rank:6, name:"Demario Douglas",  nfl:"NE",   pos:"WR", pts:14.2, owned:"12%", trend:"up",   faab:"$14" },
+  { rank:7, name:"Romeo Doubs",      nfl:"GB",   pos:"WR", pts:13.8, owned:"44%", trend:"down", faab:"$10" },
+  { rank:8, name:"Jake Ferguson",    nfl:"DAL",  pos:"TE", pts:12.4, owned:"58%", trend:"up",   faab:"$9" },
+  { rank:9, name:"Tyler Huntley",    nfl:"BAL",  pos:"QB", pts:18.9, owned:"8%",  trend:"up",   faab:"$7" },
+  { rank:10,name:"Tank Dell",        nfl:"HOU",  pos:"WR", pts:11.2, owned:"22%", trend:"down", faab:"$6" },
+];
+
+const trades = [
+  {
+    id:"TRD-2024-047", status:"pending",
+    teamA:"Gridiron Reapers", sendA:["Davante Adams","Tony Pollard"],
+    teamB:"Thunder Chickens", sendB:["Stefon Diggs","D'Andre Swift"],
+    submitted:"2h ago", deadline:"14h 32m", vetoes:0
+  },
+  {
+    id:"TRD-2024-046", status:"pending",
+    teamA:"Fantasy Kings", sendA:["Travis Kelce"],
+    teamB:"Steel Curtain FC", sendB:["Sam LaPorta","Puka Nacua"],
+    submitted:"5h ago", deadline:"11h 10m", vetoes:1
+  },
+  {
+    id:"TRD-2024-045", status:"pending",
+    teamA:"Blitz Brigade", sendA:["Derrick Henry","Dontayvion Wicks"],
+    teamB:"Meme Machine", sendB:["CeeDee Lamb"],
+    submitted:"8h ago", deadline:"8h 55m", vetoes:2
+  },
+  {
+    id:"TRD-2024-044", status:"completed",
+    teamA:"Bye Week Enjoyers", sendA:["Justin Herbert"],
+    teamB:"Kicker Dependent", sendB:["Christian McCaffrey","Mike Evans"],
+    submitted:"3 days ago", deadline:"—", vetoes:0
+  },
+  {
+    id:"TRD-2024-043", status:"rejected",
+    teamA:"Deep Ball Divers", sendA:["AJ Brown","Jaylen Waddle"],
+    teamB:"Last Place Larry", sendB:["Josh Allen"],
+    submitted:"5 days ago", deadline:"—", vetoes:4
+  },
+];
+
+const stories = [
+  { tag:"Injury Report", headline:"CMC ruled out Week 11 — massive blow for Bye Week Enjoyers', Kicker Dependent panic", time:"14m ago" },
+  { tag:"Trade Alert",   headline:"Gridiron Reapers and Thunder Chickens swap receiving corps in blockbuster deal", time:"2h ago" },
+  { tag:"Hot Streak",    headline:"Blitz Brigade's Sam Cho riding 4-game W streak into must-watch Week 11 matchup", time:"4h ago" },
+  { tag:"Waiver Wire",   headline:"Rashee Rice's breakout targets him as the top FAAB priority this week", time:"6h ago" },
+  { tag:"Commissioner",  headline:"Commish drops emergency roster announcement — expanded IR to 3 spots for Week 11+", time:"8h ago" },
+  { tag:"Power Move",    headline:"Last Place Larry attempts tanking theory — benches full healthy lineup strategically", time:"1d ago" },
+];
+
+const mediaContent = [
+  { type:"podcast", emoji:"🎙️", tag:"Podcast", title:"Week 11 Preview: Who Has the Edge?", meta:"World's End Pod • 52 min", btn:"Play" },
+  { type:"video",   emoji:"📹", tag:"Video",   title:"Full Draft Retrospective — Who Won and Lost", meta:"World's End TV • 28 min", btn:"Watch" },
+  { type:"article", emoji:"📝", tag:"Article", title:"The Trade That Could Define the Season: Reapers vs Chickens", meta:"The Hub Dispatch • 6 min read", btn:"Read" },
+  { type:"podcast", emoji:"🎙️", tag:"Podcast", title:"Waiver Wire Deep Dive — Week 11 Pickups", meta:"World's End Pod • 38 min", btn:"Play" },
+  { type:"video",   emoji:"📹", tag:"Video",   title:"Biggest Busts & Booms: A Mid-Season Recap", meta:"World's End TV • 18 min", btn:"Watch" },
+  { type:"article", emoji:"📝", tag:"Analysis", title:"By the Numbers: Playoff Odds After Week 10", meta:"Stats Central • 8 min read", btn:"Read" },
+];
+
+const chatMessages = [
+  { name:"DaQuon Mitchell", color:"#f5a623", own:false, msg:"Gridiron Reapers about to run it back. Trade offer stands 24 more hours. 😤" },
+  { name:"Priya Rao",       color:"#3a8ff5", own:false, msg:"lol enjoy it while it lasts. Diggs drops 40 on you tonight" },
+  { name:"Marcus Webb",     color:"#2ecc71", own:false, msg:"Both of you are sleeping on Fantasy Kings. We quiet but we cooking 🍳" },
+  { name:"You",             color:"#e8533a", own:true,  msg:"This matchup tonight is insane. Seeing it on the big screen at World's End 🔥" },
+  { name:"Sam Cho",         color:"#9b59b6", own:false, msg:"4 game win streak and nobody talking about Blitz Brigade 😤 disrespectful" },
+  { name:"Connor Miles",    color:"#5a5a72", own:false, msg:"Can someone please veto that Reapers/Chickens trade?? 4 vetoes needed guys" },
+];
+
+const moments = [
+  { emoji:"⚡", title:"Justin Jefferson 42.6 pts", sub:"Week 11 single-game record. Fantasy Kings cashed in." },
+  { emoji:"💀", title:"CeeDee Lamb goose egg", sub:"1.4 pts — worst outing from an elite WR1 this season." },
+  { emoji:"🔥", title:"Sam Cho's hot streak", sub:"Blitz Brigade 4-game win streak defies all projections." },
+  { emoji:"😱", title:"CMC IR'd Week 11", sub:"Bye Week Enjoyers lost 3 trade offers in 60 seconds." },
+];
+
+// ─── RENDER FUNCTIONS ─────────────────────────────────────────────
+
+function renderMomentum() {
+  const el = document.getElementById('momentumChart');
+  const sorted = [...teams].sort((a,b) => b.pf - a.pf);
+  const max = sorted[0].pf;
+  el.innerHTML = sorted.map(t => `
+    <div class="bar-row">
+      <span class="bar-label" title="${t.name}">${t.name.split(' ').slice(0,2).join(' ')}</span>
+      <div class="bar-track"><div class="bar-fill" style="width:${(t.pf/max*100).toFixed(1)}%"></div></div>
+      <span class="bar-val">${t.pf.toFixed(0)}</span>
+    </div>
+  `).join('');
+}
+
+function renderWaiverTable() {
+  const body = document.getElementById('waiverTableBody');
+  const data = [
+    { rank:1, team:"Last Place Larry",    need:"RB",   targets:"Jaylen Warren", budget:"$120" },
+    { rank:2, team:"Auto-Draft Disaster", need:"WR",   targets:"Rashee Rice",  budget:"$95" },
+    { rank:3, team:"Kicker Dependent",    need:"QB",   targets:"T. Huntley",   budget:"$80" },
+    { rank:4, team:"Deep Ball Divers",    need:"TE",   targets:"J. Johnson",   budget:"$65" },
+  ];
+  body.innerHTML = data.map(r => `
+    <tr>
+      <td class="td-mono">${r.rank}</td>
+      <td class="td-name">${r.team}</td>
+      <td><span class="badge badge-accent">${r.need}</span></td>
+      <td class="td-mono" style="color:var(--text3)">${r.budget}</td>
+    </tr>
+  `).join('');
+}
+
+function renderCommQueue() {
+  const el = document.getElementById('commQueue');
+  const items = [
+    { icon:"⚠️", title:"Veto Review: TRD-2024-045",    sub:"2 vetoes cast — needs 4 to block",  action:"Review", urgent:true },
+    { icon:"💰", title:"Prize Pool Confirmation",        sub:"All 12 managers must confirm",       action:"Confirm" },
+    { icon:"📅", title:"Playoff Bracket Seeding",        sub:"Set top 6 seeds for Week 14+",       action:"Set" },
+    { icon:"📢", title:"IR Policy Update",               sub:"Expanded to 3 slots — announce?",    action:"Post" },
+  ];
+  el.innerHTML = items.map(i => `
+    <div class="task-item">
+      <span class="task-icon">${i.icon}</span>
+      <div class="task-body">
+        <div class="task-title" style="${i.urgent?'color:var(--accent)':''}">${i.title}</div>
+        <div class="task-sub">${i.sub}</div>
+      </div>
+      <button class="btn btn-small ${i.urgent?'btn-danger':'btn-secondary'}">${i.action}</button>
+    </div>
+  `).join('');
+}
+
+function renderStories() {
+  document.getElementById('storyGrid').innerHTML = stories.map(s => `
+    <div class="story-item">
+      <div class="story-tag">${s.tag}</div>
+      <div class="story-headline">${s.headline}</div>
+      <div class="story-meta">${s.time}</div>
+    </div>
+  `).join('');
+}
+
+function renderMetrics() {
+  const colors = ['green','green','accent','accent','red','red','red'];
+  document.getElementById('metricsGrid').innerHTML = teams.slice(0,10).map((t,i) => `
+    <div class="metric-box">
+      <div class="metric-team">${t.name.split(' ').slice(-1)[0]}</div>
+      <div class="metric-val ${i<4?'green':i<7?'accent':'red'}">${t.pf.toFixed(0)}</div>
+      <div class="metric-label">PF</div>
+    </div>
+  `).join('');
+}
+
+function renderActivity() {
+  const el = document.getElementById('activityFeed');
+  const items = [
+    { dot:"green",  text:"DaQuon Mitchell set lineup" },
+    { dot:"orange", text:"Trade TRD-2024-047 submitted" },
+    { dot:"blue",   text:"Waiver claim: Rashee Rice" },
+    { dot:"red",    text:"Veto cast on TRD-2024-045" },
+    { dot:"green",  text:"Priya Rao confirmed entry fee" },
+  ];
+  el.innerHTML = items.map(i => `
+    <div class="activity-item">
+      <span class="activity-dot ${i.dot}"></span>
+      <span>${i.text}</span>
+    </div>
+  `).join('');
+}
+
+// ─── MATCH CENTER ─────────────────────────────────────────────────
+
+function renderMatchCenter() {
+  // Ticker
+  const ticks = [
+    "J. Jefferson 42.6 pts (MIN) 🔥", "CMC listed as OUT ❌", "T. Kelce 18.4 pts on 9 rec",
+    "Gridiron Reapers lead 143.7 – 131.2", "Blitz Brigade 4-game streak continues",
+    "Kicker Dependent projected dead last", "Waiver priority processing Thursday 12AM",
+    "Davante Adams 24.1 pts vs SEA"
+  ];
+  const inner = document.getElementById('tickerInner');
+  const full = [...ticks,...ticks].map(t => `<span>${t}</span>`).join('');
+  inner.innerHTML = full;
+
+  // Featured
+  const f = matchups[0];
+  document.getElementById('featuredMatchup').innerHTML = `
+    <div class="card" style="border-color:rgba(245,166,35,0.35);background:rgba(245,166,35,0.03)">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <span class="badge badge-accent">⭐ FEATURED · LIVE Q4 6:22</span>
+        <span style="font-size:12px;color:var(--text3)">Projected Finish: ${f.home.name} +12.5</span>
+      </div>
+      <div class="hero-scoreboard">
+        <div class="hero-team">
+          <div class="hero-team-name">${f.home.name.toUpperCase()}</div>
+          <div class="hero-team-score leading">${f.homeScore}</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:4px">Mgr: ${f.home.manager}</div>
+          <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:4px;justify-content:center">
+            ${['J.Jefferson 42.6','A.Cooper 18.4','D.Henry 22.1'].map(p=>`<span class="stat-pill"><strong>${p.split(' ')[0]}</strong> ${p.split(' ')[1]}</span>`).join('')}
+          </div>
+        </div>
+        <div style="text-align:center">
+          <div class="hero-vs">VS</div>
+          <div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--red);margin-top:8px">● LIVE</div>
+        </div>
+        <div class="hero-team">
+          <div class="hero-team-name">${f.away.name.toUpperCase()}</div>
+          <div class="hero-team-score" style="color:var(--text3)">${f.awayScore}</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:4px">Mgr: ${f.away.manager}</div>
+          <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:4px;justify-content:center">
+            ${['S.Diggs 31.2','P.Nacua 22.4','T.Hill 16.8'].map(p=>`<span class="stat-pill"><strong>${p.split(' ')[0]}</strong> ${p.split(' ')[1]}</span>`).join('')}
+          </div>
+        </div>
+      </div>
+    </div>`;
+
+  // Grid
+  const players = [
+    {pos:"QB",name:"J. Burrow",nfl:"CIN",pts:"28.4",status:"✅"},
+    {pos:"RB1",name:"D. Henry",nfl:"TEN",pts:"22.1",status:"✅"},
+    {pos:"RB2",name:"A. Jones",nfl:"GB",pts:"14.8",status:"✅"},
+    {pos:"WR1",name:"J. Jefferson",nfl:"MIN",pts:"42.6",status:"🔥"},
+    {pos:"WR2",name:"A. Cooper",nfl:"CLE",pts:"18.4",status:"✅"},
+    {pos:"TE",name:"T. Kelce",nfl:"KC",pts:"18.4",status:"✅"},
+  ];
+  const playersB = [
+    {pos:"QB",name:"P. Mahomes",nfl:"KC",pts:"31.6",status:"✅"},
+    {pos:"RB1",name:"R. Stevenson",nfl:"NE",pts:"11.2",status:"✅"},
+    {pos:"RB2",name:"D. Swift",nfl:"CHI",pts:"14.8",status:"✅"},
+    {pos:"WR1",name:"S. Diggs",nfl:"BUF",pts:"31.2",status:"✅"},
+    {pos:"WR2",name:"P. Nacua",nfl:"LAR",pts:"22.4",status:"✅"},
+    {pos:"TE",name:"S. LaPorta",nfl:"DET",pts:"8.2",status:"❓"},
+  ];
+
+  document.getElementById('matchupsGrid').innerHTML = matchups.map((m,i) => `
+    <div class="matchup-card${m.featured?' featured':''}">
+      <div class="matchup-header">
+        <span class="matchup-week">WEEK 11${m.featured?' · ⭐ FEATURED':''}</span>
+        <span class="badge ${m.featured?'badge-red':'badge-blue'}">${m.featured?'● LIVE':'LIVE'}</span>
+      </div>
+      <div class="matchup-teams">
+        <div class="matchup-team">
+          <div class="matchup-team-name">${m.home.name}</div>
+          <div class="matchup-team-manager">${m.home.manager}</div>
+        </div>
+        <div class="matchup-score-block">
+          <div class="matchup-scores">
+            <span class="matchup-score-val ${m.homeScore>m.awayScore?'lead':'trail'}">${m.homeScore}</span>
+            <span class="matchup-score-dash">-</span>
+            <span class="matchup-score-val ${m.awayScore>m.homeScore?'lead':'trail'}">${m.awayScore}</span>
+          </div>
+          <div class="matchup-proj">Proj: ${m.projHome} – ${m.projAway}</div>
+        </div>
+        <div class="matchup-team" style="text-align:right">
+          <div class="matchup-team-name">${m.away.name}</div>
+          <div class="matchup-team-manager">${m.away.manager}</div>
+        </div>
+      </div>
+      ${i===0 ? `<div class="matchup-players">
+        ${players.map(p=>`<div class="mp-row"><span class="mp-pos">${p.pos}</span><span class="mp-name">${p.name}</span><span class="mp-team">${p.nfl}</span><span class="mp-pts">${p.pts}</span><span class="mp-status">${p.status}</span></div>`).join('')}
+      </div>` : ''}
+    </div>
+  `).join('');
+}
+
+// ─── STANDINGS ─────────────────────────────────────────────────────
+function renderStandings() {
+  const cols = ['#','Team','W','L','T','Streak','PF'];
+  let html = `<div class="standing-row header">${cols.map(c=>`<span>${c}</span>`).join('')}</div>`;
+  teams.forEach((t,i) => {
+    const playoff = i < 6;
+    html += `<div class="standing-row${t.rank<=3?' highlight-gold':''}">
+      <span class="standing-rank${t.rank<=3?' top':''}">${t.rank}</span>
+      <div><div class="standing-team-name">${t.name}</div><div class="standing-team-manager">${t.manager}</div></div>
+      <span class="standing-num win">${t.w}</span>
+      <span class="standing-num lose">${t.l}</span>
+      <span class="standing-num">0</span>
+      <span class="standing-streak ${t.streak.startsWith('W')?'w':'l'}">${t.streak}</span>
+      <span class="standing-pts">${t.pf.toFixed(1)}</span>
+    </div>`;
+    if(i===5) html += `<div style="height:1px;background:rgba(245,166,35,0.35);position:relative"><span style="position:absolute;right:14px;top:-9px;font-size:9px;font-family:'DM Mono',monospace;color:var(--accent);background:var(--bg2);padding:0 4px">PLAYOFF LINE</span></div>`;
+  });
+  document.getElementById('standingsTable').innerHTML = html;
+
+  // Playoff race
+  document.getElementById('playoffRace').innerHTML = teams.slice(0,8).map((t,i) => `
+    <div class="playoff-bar-row">
+      <div class="playoff-bar-label">
+        <span style="font-size:12px;font-weight:600;color:${i<6?'var(--text)':'var(--text3)'}">${t.name.split(' ').slice(-1)[0]}</span>
+        <span style="font-size:11px;color:var(--text3)">${(100-i*12).toFixed(0)}%</span>
+      </div>
+      <div class="playoff-bar-track">
+        <div class="playoff-bar-fill" style="width:${100-i*12}%;background:${i<6?'linear-gradient(90deg,var(--accent2),var(--accent))':'var(--bg4)'}"></div>
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('pointsLeaders').innerHTML = teams.sort((a,b)=>b.pf-a.pf).slice(0,5).map((t,i) => `
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">
+      <span style="font-family:'Teko',sans-serif;font-size:18px;color:var(--text3);width:20px">${i+1}</span>
+      <div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--text)">${t.name}</div></div>
+      <span style="font-family:'DM Mono',monospace;font-size:13px;color:var(--accent)">${t.pf.toFixed(1)}</span>
+    </div>
+  `).join('');
+
+  // Reset sort
+  teams.sort((a,b)=>a.rank-b.rank);
+  document.getElementById('formGuide').innerHTML = teams.slice(0,8).map(t => {
+    const form = Array.from({length:3},()=>Math.random()>0.45?'W':'L');
+    return `<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border)">
+      <span style="font-size:12px;font-weight:600;color:var(--text);flex:1">${t.name.split(' ').slice(-1)[0]}</span>
+      ${form.map(f=>`<span class="badge ${f==='W'?'badge-green':'badge-red'}">${f}</span>`).join('')}
+    </div>`;
+  }).join('');
+}
+
+// ─── TRADE WIRE ─────────────────────────────────────────────────────
+function renderTrades() {
+  const statusCfg = {
+    pending:  { cls:'pending',   badge:'badge-accent', label:'PENDING' },
+    completed:{ cls:'completed', badge:'badge-green',  label:'COMPLETED' },
+    rejected: { cls:'rejected',  badge:'badge-red',    label:'VETOED' },
+  };
+  const pending = trades.filter(t=>t.status==='pending');
+  const other   = trades.filter(t=>t.status!=='pending');
+
+  document.getElementById('pendingTrades').innerHTML = pending.map(t => {
+    const cfg = statusCfg[t.status];
+    return `<div class="trade-item ${cfg.cls}">
+      <div class="trade-header">
+        <span class="trade-id">${t.id}</span>
+        <span class="badge ${cfg.badge}">${cfg.label} · ${t.vetoes} vetoes</span>
+      </div>
+      <div class="trade-teams">
+        <div class="trade-side">
+          <div class="trade-side-label">Team A — ${t.teamA}</div>
+          <div class="trade-side-team">SENDS →</div>
+          ${t.sendA.map(p=>`<span class="trade-player-chip">🏈 ${p}</span>`).join('')}
+        </div>
+        <span class="trade-arrow">⇄</span>
+        <div class="trade-side">
+          <div class="trade-side-label">Team B — ${t.teamB}</div>
+          <div class="trade-side-team">SENDS →</div>
+          ${t.sendB.map(p=>`<span class="trade-player-chip">🏈 ${p}</span>`).join('')}
+        </div>
+      </div>
+      <div class="trade-footer">
+        <span class="trade-meta">Submitted ${t.submitted} · Deadline in ${t.deadline}</span>
+        <div class="trade-actions">
+          <button class="btn btn-small btn-danger">Veto</button>
+          <button class="btn btn-small btn-secondary">Approve</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('completedTrades').innerHTML = other.map(t => {
+    const cfg = statusCfg[t.status];
+    return `<div class="trade-item ${cfg.cls}">
+      <div class="trade-header">
+        <span class="trade-id">${t.id}</span>
+        <span class="badge ${cfg.badge}">${cfg.label}</span>
+      </div>
+      <div class="trade-teams">
+        <div class="trade-side">
+          <div class="trade-side-label">${t.teamA}</div>
+          ${t.sendA.map(p=>`<span class="trade-player-chip">🏈 ${p}</span>`).join('')}
+        </div>
+        <span class="trade-arrow">⇄</span>
+        <div class="trade-side">
+          <div class="trade-side-label">${t.teamB}</div>
+          ${t.sendB.map(p=>`<span class="trade-player-chip">🏈 ${p}</span>`).join('')}
+        </div>
+      </div>
+      <div class="trade-footer">
+        <span class="trade-meta">Submitted ${t.submitted}</span>
+        <div></div>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('mostTraded').innerHTML = [
+    {name:"Travis Kelce",n:4}, {name:"Davante Adams",n:3},{name:"Justin Jefferson",n:3},
+    {name:"CeeDee Lamb",n:2},{name:"Derrick Henry",n:2}
+  ].map((p,i)=>`
+    <div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border)">
+      <span style="font-family:'Teko',sans-serif;font-size:16px;color:var(--text3);width:18px">${i+1}</span>
+      <span style="flex:1;font-size:13px;color:var(--text);font-weight:600">🏈 ${p.name}</span>
+      <span class="badge badge-accent">${p.n} trades</span>
+    </div>
+  `).join('');
+}
+
+// ─── WAIVER LAB ─────────────────────────────────────────────────────
+function renderWaiverLab() {
+  const header = `<div class="waiver-player-row header">
+    <span>#</span><span>Player</span><span>Pts/Wk</span><span>Owned</span><span>Trend</span><span>FAAB</span><span>Action</span>
+  </div>`;
+  const rows = waiverPlayers.map(p => `
+    <div class="waiver-player-row">
+      <span class="waiver-rank">${p.rank}</span>
+      <div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <span class="w-pos-tag ${p.pos}">${p.pos}</span>
+          <span style="font-size:13px;font-weight:600;color:var(--text)">${p.name}</span>
+          <span style="font-size:11px;color:var(--text3)">${p.nfl}</span>
+        </div>
+      </div>
+      <span class="w-pts" style="color:var(--green)">${p.pts}</span>
+      <span style="font-size:12px;color:var(--text2)">${p.owned}</span>
+      <span class="w-trend ${p.trend}">${p.trend==='up'?'↑ Rising':'↓ Fading'}</span>
+      <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--accent)">${p.faab}</span>
+      <button class="waiver-add-btn">+ Add ($${Math.floor(Math.random()*40)+5})</button>
+    </div>
+  `).join('');
+  document.getElementById('waiverList').innerHTML = header + rows;
+
+  document.getElementById('waiverInsights').innerHTML = [
+    { icon:"🔥", title:"Rashee Rice — Must Add", body:"87% snap share last week with Hill out. Targets skyrocketing. Drop anyone for him." },
+    { icon:"⚡", title:"Jaylen Warren Handcuff", body:"Harris on injury report. Warren logged 20 carries in his last start. Speculative add." },
+    { icon:"📉", title:"Romeo Doubs — Drop Watch", body:"Target share declining 3 straight weeks. Watson getting hot, look elsewhere at WR." },
+    { icon:"💡", title:"Streaming QB: T. Huntley", body:"Baltimore travels to Cleveland this week. Huntley has floor + upside. $7 bid wins." },
+  ].map(i=>`
+    <div class="insight-item">
+      <span class="insight-icon">${i.icon}</span>
+      <div><div class="insight-title">${i.title}</div><div class="insight-body">${i.body}</div></div>
+    </div>
+  `).join('');
+
+  document.getElementById('myClaims').innerHTML = [
+    { priority:1, player:"Rashee Rice",    drop:"Dontayvion Wicks", bid:"$38" },
+    { priority:2, player:"Jaylen Warren",  drop:"Gus Edwards",      bid:"$24" },
+  ].map(c=>`
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+        <span style="font-size:11px;font-family:'DM Mono',monospace;color:var(--text3)">Priority #${c.priority}</span>
+        <span class="badge badge-accent">${c.bid}</span>
+      </div>
+      <div style="font-size:13px;font-weight:700;color:var(--text)">+ ${c.player}</div>
+      <div style="font-size:11px;color:var(--text3)">Drop: ${c.drop}</div>
+    </div>
+  `).join('');
+}
+
+// ─── MEDIA ROOM ─────────────────────────────────────────────────────
+function renderMediaRoom() {
+  document.getElementById('mediaGrid').innerHTML = mediaContent.map(m => `
+    <div class="media-card">
+      <div class="media-thumb ${m.type}" style="position:relative">
+        <span>${m.emoji}</span>
+        <button class="media-play-btn">${m.btn} ▶</button>
+      </div>
+      <div class="media-body">
+        <div class="media-tag">${m.tag}</div>
+        <div class="media-title">${m.title}</div>
+        <div class="media-meta">${m.meta}</div>
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('pollCard').innerHTML = `
+    <div class="card-header"><span class="card-title">📊 League Poll</span><span class="badge badge-blue">42 Votes</span></div>
+    <div class="poll-q">Who wins it all this season?</div>
+    ${[
+      {name:"Gridiron Reapers",pct:38},
+      {name:"Fantasy Kings",pct:26},
+      {name:"Blitz Brigade",pct:18},
+      {name:"Other",pct:18},
+    ].map(o=>`
+      <div class="poll-option">
+        <div class="poll-opt-label"><span class="poll-opt-name">${o.name}</span><span class="poll-opt-pct">${o.pct}%</span></div>
+        <div class="poll-track"><div class="poll-fill" style="width:${o.pct}%"></div></div>
+      </div>
+    `).join('')}
+  `;
+
+  document.getElementById('powerRankings').innerHTML = [
+    {rank:1,prev:2,team:"Gridiron Reapers",  note:"Dominant across the board"},
+    {rank:2,prev:1,team:"Fantasy Kings",      note:"Jefferson carried all week"},
+    {rank:3,prev:4,team:"Blitz Brigade",      note:"4-game streak is real"},
+    {rank:4,prev:3,team:"Thunder Chickens",   note:"CMC loss stings badly"},
+    {rank:5,prev:5,team:"Steel Curtain FC",   note:"Steady but need more WR1"},
+    {rank:6,prev:7,team:"Touchdown Bandits",  note:"Sneaky playoff contender"},
+  ].map(r=>`
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">
+      <span style="font-family:'Teko',sans-serif;font-size:20px;color:${r.rank<=3?'var(--accent)':'var(--text3)'};width:24px">${r.rank}</span>
+      <span style="font-size:9px;color:${r.rank<r.prev?'var(--green)':r.rank>r.prev?'var(--red)':'var(--text3)'}">
+        ${r.rank<r.prev?'▲':r.rank>r.prev?'▼':'—'}
+      </span>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:600;color:var(--text)">${r.team}</div>
+        <div style="font-size:11px;color:var(--text3)">${r.note}</div>
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('chatMessages').innerHTML = chatMessages.map(m => `
+    <div class="chat-msg ${m.own?'own':''}">
+      <div class="chat-avatar" style="background:${m.color}22;color:${m.color}">${m.name[0]}</div>
+      <div class="chat-bubble">
+        ${m.own?'':'<div class="chat-msg-name">'+m.name+'</div>'}
+        <div class="chat-msg-text">${m.msg}</div>
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('notableMoments').innerHTML = moments.map(m => `
+    <div class="insight-item">
+      <span class="insight-icon">${m.emoji}</span>
+      <div><div class="insight-title">${m.title}</div><div class="insight-body">${m.sub}</div></div>
+    </div>
+  `).join('');
+}
+
+// ─── COMMISSIONER ─────────────────────────────────────────────────────
+function renderCommissioner() {
+  document.getElementById('pendingActions').innerHTML = [
+    { icon:"🚨", title:"Trade Veto Threshold",     sub:"TRD-2024-045 has 2 of 4 needed vetoes. 4h left.", urgent:true,  btn:"Adjudicate" },
+    { icon:"⚠️", title:"Unresponsive Manager",     sub:"Jake Patel hasn't set lineup in 2 weeks.",        urgent:true,  btn:"Warn Manager" },
+    { icon:"📋", title:"Prize Pool Confirmation",  sub:"3 of 12 managers still unpaid.",                  urgent:false, btn:"Send Reminder" },
+    { icon:"📅", title:"Playoff Seeding Locks",    sub:"Confirm Week 14 bracket seeding by Fri.",         urgent:false, btn:"Configure" },
+  ].map(a=>`
+    <div class="comm-action-item">
+      <span class="comm-action-icon">${a.icon}</span>
+      <div class="comm-action-body">
+        <div class="comm-action-title" style="${a.urgent?'color:var(--accent)':''}">${a.title}</div>
+        <div class="comm-action-sub">${a.sub}</div>
+      </div>
+      <button class="btn btn-small ${a.urgent?'btn-danger':'btn-secondary'} comm-action-btn">${a.btn}</button>
+    </div>
+  `).join('');
+
+  document.getElementById('quickTools').innerHTML = [
+    { icon:"🔄", title:"Force Waiver Process",   sub:"Override and run waivers now" },
+    { icon:"👤", title:"Transfer Team Ownership", sub:"Move team to another user" },
+    { icon:"🏆", title:"Override Game Score",     sub:"Manually adjust final score" },
+    { icon:"📢", title:"Broadcast Message",       sub:"Alert all 12 managers" },
+    { icon:"📉", title:"Apply Penalty",           sub:"Dock points or fine a team" },
+    { icon:"🗓️", title:"Edit Schedule",           sub:"Swap or adjust Week matchups" },
+  ].map(t=>`
+    <div class="comm-action-item">
+      <span class="comm-action-icon">${t.icon}</span>
+      <div class="comm-action-body">
+        <div class="comm-action-title">${t.title}</div>
+        <div class="comm-action-sub">${t.sub}</div>
+      </div>
+      <button class="btn btn-small btn-secondary">Run</button>
+    </div>
+  `).join('');
+
+  document.getElementById('violationLog').innerHTML = [
+    { icon:"🔴", title:"Failed to set lineup",   sub:"Jake Patel — Week 10", sev:"HIGH" },
+    { icon:"🟡", title:"Late trade submission",   sub:"Sam Cho — Week 9",    sev:"WARN" },
+    { icon:"🟡", title:"Roster exceed cap temp",  sub:"Connor Miles — Week 8",sev:"WARN" },
+    { icon:"⚫", title:"Dispute — score glitch",  sub:"DaQuon Mitchell — Week 7",sev:"RESOLVED" },
+  ].map(v=>`
+    <div class="violation-item">
+      <span class="violation-icon">${v.icon}</span>
+      <div class="violation-body">
+        <div class="violation-title">${v.title}</div>
+        <div class="violation-sub">${v.sub}</div>
+      </div>
+      <span class="violation-severity badge ${v.sev==='HIGH'?'badge-red':v.sev==='WARN'?'badge-accent':'badge-blue'}">${v.sev}</span>
+    </div>
+  `).join('');
+
+  document.getElementById('announcements').innerHTML = [
+    { emoji:"📢", title:"IR expanded to 3 slots",        time:"Today 2:30 PM" },
+    { emoji:"🏆", title:"Playoff format confirmed: 6-team",  time:"Yesterday" },
+    { emoji:"💰", title:"Entry fee reminder — 3 unpaid",   time:"Nov 4" },
+  ].map(a=>`
+    <div style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
+      <span style="font-size:18px">${a.emoji}</span>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:600;color:var(--text)">${a.title}</div>
+        <div style="font-size:11px;color:var(--text3)">${a.time}</div>
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('auditStats').innerHTML = [
+    { label:"Total Trades",   val:"47",    icon:"🔄" },
+    { label:"Waiver Claims",  val:"184",   icon:"📋" },
+    { label:"Avg Score/Wk",   val:"122.4", icon:"📊" },
+    { label:"Highest Score",  val:"186.3", icon:"🏆" },
+    { label:"Total Vetoes",   val:"11",    icon:"🚫" },
+    { label:"Prize Pool",     val:"$1,200",icon:"💰" },
+  ].map(s=>`
+    <div style="text-align:center;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:16px 10px">
+      <div style="font-size:24px;margin-bottom:6px">${s.icon}</div>
+      <div style="font-family:'Teko',sans-serif;font-size:28px;font-weight:700;color:var(--accent)">${s.val}</div>
+      <div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;margin-top:2px">${s.label}</div>
+    </div>
+  `).join('');
+}
+
+// ─── SETTINGS ─────────────────────────────────────────────────────────
+function renderSettings() {
+  function row(label, sub, val) {
+    return `<div class="settings-row"><div><div class="settings-label">${label}</div>${sub?`<div class="settings-sub">${sub}</div>`:''}</div><span class="settings-val">${val}</span></div>`;
+  }
+  function toggleRow(label, sub, on) {
+    return `<div class="settings-row"><div><div class="settings-label">${label}</div>${sub?`<div class="settings-sub">${sub}</div>`:''}</div><div class="toggle ${on?'on':''}" onclick="this.classList.toggle('on')"></div></div>`;
+  }
+
+  document.getElementById('scoringSettings').innerHTML = `
+    ${row("Passing TD","Per touchdown pass","4 pts")}
+    ${row("Rushing TD","Per rushing TD","6 pts")}
+    ${row("Receiving TD","Per reception TD","6 pts")}
+    ${row("Passing Yards","Per passing yard","0.04 pts")}
+    ${row("Rushing Yards","Per rushing yard","0.1 pts")}
+    ${row("Receiving Yards","Per receiving yard","0.1 pts")}
+    ${row("PPR","Points per reception","1.0 pt")}
+    ${row("INT","Per interception thrown","−2 pts")}
+    ${row("Fumble Lost","Per lost fumble","−2 pts")}
+  `;
+
+  document.getElementById('scheduleSettings').innerHTML = `
+    ${row("Regular Season","Weeks of play","Weeks 1–13")}
+    ${row("Playoff Start","First playoff week","Week 14")}
+    ${row("Championship","Final week","Week 17")}
+    ${row("Matchup Type","Head-to-head or total","H2H")}
+    ${toggleRow("Consolation Bracket","Run bracket for non-playoff teams",true)}
+    ${toggleRow("Toilet Bowl","Last place playoff of shame",true)}
+  `;
+
+  document.getElementById('rosterSettings').innerHTML = `
+    ${row("Starting QB","Starters required","1")}
+    ${row("Starting RB","Starters required","2")}
+    ${row("Starting WR","Starters required","2")}
+    ${row("Starting TE","Starters required","1")}
+    ${row("FLEX Slots","RB/WR/TE flexible","2")}
+    ${row("K / DEF","Kicker and defense","1 / 1")}
+    ${row("Bench Slots","Bench spots","7")}
+    ${row("IR Slots","Injured reserve","3")}
+    ${toggleRow("Taxi Squad","Practice squad roster",false)}
+  `;
+
+  document.getElementById('draftSettings').innerHTML = `
+    ${row("Draft Type","Snake or auction","Snake")}
+    ${row("Draft Date","Scheduled time","Aug 25, 7:00 PM")}
+    ${row("Pick Timer","Seconds per pick","90 sec")}
+    ${row("Entry Fee","Cost per team","$100")}
+    ${row("1st Place","Prize amount","$700")}
+    ${row("2nd Place","Prize amount","$300")}
+    ${row("Most Points","Season bonus","$200")}
+    ${toggleRow("Auto-Draft","Fill missing picks automatically",true)}
+  `;
+
+  document.getElementById('notifSettings').innerHTML = `
+    ${toggleRow("Lineup Reminders","Alert before Sunday noon",true)}
+    ${toggleRow("Trade Alerts","Notify on new trade offers",true)}
+    ${toggleRow("Waiver Results","Results sent Thursday AM",true)}
+    ${toggleRow("Score Updates","Live score push notifications",false)}
+    ${toggleRow("Commissioner Alerts","Announcements & rule changes",true)}
+    ${toggleRow("Email Digest","Weekly summary email",false)}
+  `;
+
+  document.getElementById('privacySettings').innerHTML = `
+    ${toggleRow("Public League","Visible in league finder",false)}
+    ${toggleRow("Share Rosters","Allow public roster view",true)}
+    ${toggleRow("Chat Enabled","League-wide group chat",true)}
+    ${row("Commissioner","Current commish","DaQuon Mitchell")}
+    ${row("Co-Commissioner","Backup admin","Marcus Webb")}
+    <div class="settings-row"><div><div class="settings-label">Transfer Commish</div></div><button class="btn btn-small btn-secondary">Transfer</button></div>
+  `;
+}
+
+// ─── FILTER BUTTONS ───────────────────────────────────────────────────
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    btn.closest('.waiver-filters').querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+
+// ─── NAVIGATION ───────────────────────────────────────────────────────
+const viewTitles = {
+  overview: "Overview",
+  'match-center': "Match Center",
+  standings: "Standings",
+  'trade-wire': "Trade Wire",
+  'waiver-lab': "Waiver Lab",
+  'media-room': "Media Room",
+  commissioner: "Commissioner Tools",
+  settings: "League Settings",
+};
+
+document.querySelectorAll('.nav-item').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const view = btn.dataset.view;
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    document.getElementById('view-'+view).classList.add('active');
+    document.getElementById('pageTitle').textContent = viewTitles[view];
+  });
+});
+
+// ─── INIT ─────────────────────────────────────────────────────────────
+renderActivity();
+renderMomentum();
+renderWaiverTable();
+renderCommQueue();
+renderStories();
+renderMetrics();
+renderMatchCenter();
+renderStandings();
+renderTrades();
+renderWaiverLab();
+renderMediaRoom();
+renderCommissioner();
+renderSettings();
+</script>
+</body>
+</html>
